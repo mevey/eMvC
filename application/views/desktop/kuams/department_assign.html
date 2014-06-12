@@ -1,0 +1,120 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+
+<?php include('common/header.php'); ?>
+
+<script type="text/javascript" src="<?php t('templatePathUrl') ?>js/custom/tables.js"></script>
+<script type="text/javascript" src="<?php t('templatePathUrl') ?>js/plugins/jquery.dataTables.min.js"></script>
+<script type="text/javascript" charset="utf-8">
+	jQuery(document).ready(function(){
+		jQuery("a[rel^='prettyPhoto']").prettyPhoto();
+	});
+</script>
+</head>
+
+<body class="withvernav">
+
+<div class="bodywrapper">
+
+	<?php include('common/top_header.php'); ?>
+	<?php include('common/menu_header.php'); ?>
+		
+	<div class="centercontent" style="padding-bottom:50px;">
+	
+		<div class="pageheader">
+			<h1 class="pagetitle"><?php echo $dept_data['department_name'].' '; ?> Assets</h1>
+			<span class="pagedesc">Assign assets to users in your department</span>
+			
+			<ul class="hornav">
+				<li><a href="<?php t('baseUrl'); ?>departmentasset">Asset List</a></li>
+				<li><a href="<?php echo $baseUrl.'departmentasset/add'?>">Add Asset</a></li>
+				<li class="current"><a>Assign Asset</a></li>
+				<li><a href ="<?php echo $baseUrl.'returnedassets/dept_assets'?>">Returned assets pending approval</a></li>
+			</ul>
+		</div><!--pageheader-->
+		
+		
+		<div id="contentwrapper" class="contentwrapper">
+			<div id="addAsset" class="subcontent">
+				<div class="contenttitle2">
+					<h3>Assign This Asset</h3> 
+				</div><!--contenttitle-->
+				<br />
+				<p><button class="stdbtn" onclick="window.location='<?php t('baseUrl'); ?>departmentasset'" style="float:left">&laquo; Back</button></p><br/><br/>
+				<div>
+					<div class="one_half">
+						<p>
+							<label for="title">Asset tag id: </label><?php echo ' '.$asset_data['asset_tag_id'];?>
+						</p>
+						<p>
+							<label for="slug">Model/Type:</label><?php echo ' '.$asset_data['asset_model'];?>
+						</p>
+						<p>
+							<label for="slug"> Category of the asset:</label><?php echo ' '.$category_data['asset_category_name'];?>
+							
+						</p>
+						<p>
+							<?php foreach ($media as $img) { ?>
+							<a rel="prettyPhoto" href="<?php echo $baseUrl.$img['asset_media_url_path']?>" ><img class="img" src="<?php echo $baseUrl.$img['asset_media_url_path']?>" style="height:100px;border: 1px solid #eee;"/></a>
+							<?php } ?>
+						</p>
+						
+						<?php
+						if ($allocation_data['allocation_fk_user_id'] == 0) {
+							echo '<h4>Not currently assigned to anyone.</h4>';
+						} else {
+						?>
+							<h4>Currently allocated to:</h4>
+							<p><img class="img" src="<?php echo $baseUrl.$user_img; ?>" style="height:100px;border: 1px solid #eee;"/></p>
+							<p>
+								<label for="title">Name: </label><?php echo ' '.$allocated_user_data['user_surname'].' '.$allocated_user_data['user_othername'];?>
+							</p>
+							<p>
+								<label for="title">Employment Number: </label><?php echo ' '.$allocated_user_data['user_employment_number'];?>
+							</p>
+							<p>
+								<label for="title">Email: </label><?php echo ' '.$allocated_user_data['user_email'];?>
+							</p>
+							<p>
+								<label for="title">Phone Number: </label><?php echo ' '.$allocated_user_data['user_phone_number'];?>
+							</p>
+							<p>
+								<label for="title">Office/Area of work: </label><?php echo ' '.$allocated_user_data['user_office'];?>
+							</p>
+						<?php } ?>
+					</div><!-- one_half -->
+					
+					<div class="one_half last">
+						<form action="<?php echo $baseUrl.'departmentasset/assign_user'; ?>" method="post" >
+							<input type="hidden" name ="asset_id" value="<?php echo $asset_data['asset_id']?>" />
+							<input type="hidden" name ="dept_id" value="<?php echo $dept_data['department_id']?>"
+							<input type="hidden" name ="date" value="<?php ?>"/>
+							<h4>Allocate to a New User:</h4>
+							<i>These are all users from your department</i><br/>
+							<select name="user_id">
+									<option value="0"></option>
+									<?php
+									foreach ($users_data as $user) {
+										echo '<option value="'.$user['user_id'].'">'.$user['user_employment_number'].': '.$user['user_surname'].' '.$user['user_othername'].'</option>'."\n";
+									}
+									?>
+								</select>
+							<input type="submit" value="Assign to this User" class="stdbtn" />
+							<br clear="all" />
+						</form>
+						
+					</div><!-- one_half last -->
+				</div>
+			</div><!-- #activities -->
+		
+		</div><!--contentwrapper-->
+		
+		<br clear="all" />
+		
+	</div><!-- centercontent -->
+	
+</div><!--bodywrapper-->
+<?php include('footer.html'); ?>
+</body>
+</html>

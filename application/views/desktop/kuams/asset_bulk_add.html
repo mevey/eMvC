@@ -1,0 +1,112 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+
+<?php include('common/header.php'); ?>
+
+<script type="text/javascript" src="<?php t('templatePathUrl') ?>js/custom/tables.js"></script>
+<script type="text/javascript" src="<?php t('templatePathUrl') ?>js/custom/forms.js"></script>
+<script type="text/javascript" src="<?php t('templatePathUrl') ?>js/custom/attributes.js"></script>
+
+</head>
+
+<body class="withvernav">
+
+<div class="bodywrapper">
+
+	<?php include('common/top_header.php'); ?>
+	<?php include('common/menu_header.php'); ?>
+		
+	<div class="centercontent" style="padding-bottom:50px;">
+	
+		<div class="pageheader">
+			<h1 class="pagetitle">Assets</h1>
+			<span class="pagedesc">Add, edit and update assets</span>
+			
+			<ul class="hornav">
+				<li><a href="<?php t('baseUrl'); ?>asset">Asset List</a></li>
+				<li><a href="<?php t('baseUrl'); ?>asset/add">Add an asset</a></li>
+				<li class="current"><a >Bulk Add Assets</a></li>
+				<li><a href ="<?php echo $baseUrl.'returnedassets/all_assets'?>">Returned assets pending approval (<?php echo $count; ?>)</a></li>
+				<li><a href="<?php t('baseUrl'); ?>disposeasset">Assets set for disposal</a></li>
+			</ul>
+		</div><!--pageheader-->
+		
+		
+		<div id="contentwrapper" class="contentwrapper">
+			<div id="addAsset" class="subcontent">
+				<div class="contenttitle2">
+					<h3>Add assets in Bulk</h3> 
+				</div><!--contenttitle-->
+				<br />
+				<form action="<?php t('baseUrl') ?>asset/bulk_add" method="post" class="stdform" id="bulk_add" enctype="multipart/form-data">
+					<input type="hidden" name="count" id="count" value="1"/>
+					<input type="hidden" name="img_count" id="img_count" value="1"/>
+					<p><label><b>Category :</b></label><select id="category" name="category" onchange="showBulkAttributes(document.getElementById('category').value, '<?php echo $baseUrl;?>asset/bulk_attrib')">
+						<option>Please Select a Category</option>
+						<?php
+						foreach ($category_data as $cat) {
+							if ($cat['asset_category_id'] == 0) continue;
+							echo '<option value="'.$cat['asset_category_id'].'">'.$cat['asset_category_name'].'</option>'."\n";
+						}
+						?>
+					</select></p>
+					<p><label><b>Cost(ksh) :</b></label><input type="number" name="cost" class="smallinput" /></p>
+					<p><label><b>Supply Date :</b></label><input type="text" name="date"  id="datepick"  class="smallinput" /></p>
+					<p><label><b>Supplier (name and contact):</b></label><input type="text" name="supplier"  class="smallinput" /></p>
+					
+					<div id="attrib_table_data"></div>
+					
+					<div id="images">
+						<div id="image_1">
+							<p>
+								<label><b>Upload an Image of the asset :</b></label>
+								<span class="field">
+									<input type="file" name="asset_img_1" />
+								</span>
+							</p>
+						</div>
+						<div id ="image_2"></div>
+					</div>
+					<button onclick="addAnother();return false;" class="stdbtn">Add Another Image</button>
+					<script type="text/javascript">
+					var num = 1;
+					var count = 1;
+					
+					function addAnother() {
+						num++;
+						count++;
+						document.getElementById('image_'+num).innerHTML += getHtml(num);
+						document.getElementById('img_count').value = count;
+					}
+					
+					function getHtml(num) {
+						return '<p><label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>'+
+								'<span class="field">'+
+									'<input type="file" name="asset_img_'+num+'" />'+
+								'</span>'+
+							'</p>'+
+						'<div id="image_'+(num+1)+'"></div>';
+					}
+					</script>
+					<br clear="all" />
+					<br/>
+					
+					<div class="quickformbutton">
+						<button class="update">Save</button>
+						<a href="<?php echo $baseUrl.'asset'?>" class=" stdbtn cancel">Cancel</a>
+					</div><!-- button -->
+				</form>
+
+			</div><!-- #activities -->
+		
+		</div><!--contentwrapper-->
+		
+		<br clear="all" />
+		
+	</div><!-- centercontent -->
+	
+</div><!--bodywrapper-->
+<?php include('footer.html'); ?>
+</body>
+</html>

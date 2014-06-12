@@ -1,0 +1,101 @@
+<h4>Edit Asset</h4>
+<br />
+<form action=" <?php t('baseUrl') ?>quick/update_dept_asset" method="post" class="quickform" enctype="multipart/form-data">
+	<input type="hidden" name="id" value='<?php echo $data->asset_id; ?>'/>
+	<input type="hidden" name="imagesarr" id="imagesarr" value=""/>
+	<div class="one_half">
+		<div class="gallerywrapper" style="min-height:0px">
+			<ul class="imagelist">
+			<?php foreach ($media as $img) { ?>
+				<li id="<?php echo$img['asset_media_id'] ?>">
+				<a href="<?php echo $baseUrl.$img['asset_media_url_path']?>" rel="prettyPhoto"><img class="img" style="width:200px;" src="<?php echo $baseUrl.$img['asset_media_url_path']?>" /></a>
+				<span><a class="delete" onclick="setfordeletion(<?php echo $img['asset_media_id']?>)"></a></span>
+				</li>
+			<?php } ?>
+			</ul>
+		</div>
+		<script type="text/javascript">
+			var arr = '';
+			function setfordeletion(id) {
+				arr += id+', ';
+				document.getElementById(id).style.display = "none";
+				document.getElementById('imagesarr').value = arr;
+			}
+		</script>
+		<br clear="all"/>
+		<p>
+			<label>Tag ID</label><br/>
+			<input type="text" name="tag_id" value='<?php echo $data->asset_tag_id; ?>'/><br/>
+		</p>
+		<p>
+			<label for="slug">Category</label><br/>
+			<select name="category">
+				<?php
+				foreach ($asset_category_data as $cat) {
+					if ($cat['asset_category_id'] ==  $data->asset_fk_cat_id) {
+						$selected = 'selected="selected"';
+					} else {
+						$selected = '';
+					}
+					echo '<option '.$selected.' value="'.$cat['asset_category_id'].'">'.$cat['asset_category_name'].'</option>'."\n";
+				}
+				?>
+			</select>
+		</p>
+		<p>
+			<label for="slug">Model/Type</label><br/>
+			<input type="text" name="model"  value='<?php echo $data->asset_model; ?>'/>
+		</p>
+		
+		<p>
+			<label for="slug" title="The asset's initial cost" class="tooltip">Cost</label><br/>
+			<input type="text" name="cost"  value='<?php echo $data->asset_cost; ?>' />
+		</p>
+		
+		<p>
+			<label for="date">Supply Date</label><br/>
+			<input type="text" id="date" name="date" class="smallinput"  value='<?php echo $data->asset_supply_date; ?>'/>
+		</p>
+		<p>
+			<label>Upload an Image of the asset</label>
+			<span class="field">
+				<input type="file" name="asset_img" />
+			</span>
+		</p>
+		
+	</div><!-- one_half -->
+	
+	<div class="one_half last">
+		<h4>Asset History</h4>
+		<?php 
+		if (is_array($history) && count($history) != 0) {
+			foreach ($history as $h) {
+				echo '<p style="border-bottom:solid 1px #eaeaea;padding:5px;">'.$h['log_asset_description'];
+				echo '<br/><i>'.$h['log_date'].'</i></p>';
+			}
+		} else {
+			echo 'No asset history recorded';
+		}
+		?>
+	</div><!-- one_half last -->
+	
+	<br clear="all" />
+	
+	<div class="quickformbutton">
+		<button class="update">Update</button>
+		<a href="<?php echo $baseUrl.'departmentasset/return_asset?id='.$data->asset_id;?>" class="stdbtn">Return this Asset</a>
+		<?php if (Registry::checkRole(Roles::DELETE_ASSET)) {?>
+			<button onclick="window.location='<?php echo $baseUrl.'quick/delete_dept_asset?id='.$data->asset_id ?>'; return false; " class="button" style="margin-top:0px;">Delete Asset</button>
+		<?php } ?>
+		
+		<?php if (Registry::checkRole(Roles::DISPOSE_ASSET)) {?>
+			<button onclick="window.location='<?php echo $baseUrl.'quick/dispose_dept_asset?id='.$data->asset_id ?>'; return false; " class="button" style="margin-top:0px;">Set this asset for Disposal</button>
+		<?php } ?>
+		
+		<button class="cancel" style="float:right">Close</button>
+		
+	</div><!-- button -->
+</form>
+<script type="text/javascript" charset="utf-8">
+	jQuery("a[rel^='prettyPhoto']").prettyPhoto();
+</script>

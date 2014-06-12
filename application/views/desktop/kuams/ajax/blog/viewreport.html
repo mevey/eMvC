@@ -1,0 +1,50 @@
+<h4>Repair Report</h4>
+<br />
+<div>
+	<div class="one_half">
+		<?php $maintenance = $maintenance_data[0]; ?>
+		<p>
+			<label for="title">Category: </label><?php echo '<b>'.$maintenance['asset_category_name'].'</b>'?>
+			<label for="title">Asset Tag ID: </label><?php echo '<b>'.$maintenance['asset_tag_id'].'</b>'?>
+			<label for="title">Model: </label><?php echo '<b>'.$maintenance['asset_model'].'</b>'?>
+		</p>
+		<p>
+			<label for="title">Current Owner </label><?php echo '<b>'.$maintenance['user_surname'].' '.$maintenance['user_othername'].'</b>'?>
+			<label for="title">User's Office: </label><?php echo '<b>'.$maintenance['user_office'].'</b>';?>
+			<label for="title">Department: </label><?php echo '<b>'.$maintenance['department_name'].'</b>'?>
+		</p>
+	
+	</div>
+	<div class="one_half last" >
+		<?php if (isset($past_repairs)) { ?>
+		<table style="border:1px solid #eaeaea">
+			<colgroup>
+				<col class="con0" width="50%"/>
+				<col class="con1" width="50%"/>
+			</colgroup>
+			<tr>
+				<th>Problem</th>
+				<th>Repair report</th>
+			</tr>
+			<?php 
+			foreach($past_repairs as $row){ 
+				echo '<tr style="border:1px solid #eaeaea">';
+				echo '<td class="con0">'. $row['maintenance_problem'].'<br/><i>'.$row['maintenance_problem_date'].'</i></td>';
+				if ( $row['maintenance_done'] == 0){
+					echo '<td class="con1"><b style="color:red"> No repair report made for this problem</b></td>';
+				} else {
+					echo '<td class="con1">'. $row['maintenance_report'].'<br/><p>Fixed by: '.$row['user_surname'].' '.$row['user_othername'].'<br/>On <i>'.$row['maintenance_report_date'].'</i></p></td>';
+				}
+				echo '</tr>';
+			}
+			?>
+		</table>
+		<?php } ?>
+	</div>
+</div>
+<form class="quickform">
+	<div class="quickformbutton">
+		<button class="cancel" style="float:right;">Close</button>
+	</div>
+</form>
+

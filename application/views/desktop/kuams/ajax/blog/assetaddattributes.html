@@ -1,0 +1,35 @@
+<?php
+$str = '';
+$attribName = '';
+$allAttribNames = '';
+$count = 0;
+foreach($attrib_data as $attrib) {
+	$attribName = $attrib['attrib_name'];
+	$attribLabel = ucwords(str_replace('_', ' ',$attribName));
+	$attribName = str_replace(' ', '_', $attribName);
+	$attribName = 'attrib_'.strtolower($attribName);
+	
+	$str = '<p><label>';
+	$str .= $attribLabel.'</label>';
+	if ($attrib['attrib_type'] == 'yesno') {
+		$str .= '<select style="background:lightblue" name="'.$attribName.'"><option value="1">Yes</option><option value="0">No</option></select>';
+	} else if ($attrib['attrib_type'] == 'text') {
+		$str .= '<input style="background:lightblue" type="text" class="smallinput" name="'.$attribName.'"';
+		if ($attrib['attrib_required'] == 1) $str .= ' required="true" ';
+		$str .= '/>';
+	} else if ($attrib['attrib_type'] == 'number') {
+		$str .= '<input style="background:lightblue" type="number" class="smallinput" name="'.$attribName.'"';
+		if ($attrib['attrib_required'] == 1) $str .= ' required="true" ';
+		$str .= '/>';
+	} else if ($attrib['attrib_type'] == 'options') {
+		$str .= '<select style="background:lightblue" name="'.$attribName.'" >';
+		foreach($attrib['attrib_config'] as $config){
+			$str .= '<option value="'.$config.'">'.$config.'</option>';
+		}
+		$str .= '</select>';
+	}
+	$str .= '</p>';
+	echo $str;
+	$count++;
+}
+?>

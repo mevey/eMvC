@@ -1,0 +1,99 @@
+<?php
+$msg = '<br/><strong>Asset Attributes</strong><br/>';
+$msg_shown = false;
+
+$str = '';
+$attribName = '';
+$allAttribNames = '';
+$count = 0;
+$usedAttribs = array();
+if (!empty($attrib_data)) {
+	foreach($attrib_data as $attrib) {
+		$attribName = $attrib['attrib_name'];
+		$usedAttribs[$attribName] = 1;
+		$attribLabel = ucwords(str_replace('_', ' ',$attribName));
+		$attribValue = $attrib['attrib_value'];
+		$attribName = str_replace(' ', '_', $attribName);
+		$attribName = 'attrib_'.strtolower($attribName);
+		
+		if ($msg_shown == false) {
+			echo $msg;
+			$msg_shown = true;
+		}
+		
+		$str = '<p><label>';
+		$str .= $attribLabel.'</label>';
+		if ($attrib['attrib_type'] == 'yesno') {
+			$str .= '<select style="background:lightblue" name="'.$attribName.'">';
+			
+			$selectedYes = $attribValue == '1' ? 'selected="selected"' : '';
+			$selectedNo = $attribValue == '0' ? 'selected="selected"' : '';
+			
+			$str .= '<option '.$selectedYes.' value="1">Yes</option>';
+			$str .= '<option '.$selectedNo.' value="0">No</option></select>';
+		} else if ($attrib['attrib_type'] == 'text') {
+			if ($attrib['attrib_required'] == 1) $str .= '<i style="color:red">*</i> ';
+			$str .= '<input style="background:lightblue" type="text" value="'.$attribValue.'" class="smallinput" name="'.$attribName.'"';
+			$str .= '/>';
+		} else if ($attrib['attrib_type'] == 'number') {
+			if ($attrib['attrib_required'] == 1) $str .= '<i style="color:red">*</i> ';
+			$str .= '<input style="background:lightblue" type="number" value="'.$attribValue.'" class="smallinput" name="'.$attribName.'"';
+			$str .= '/>';
+		} else if ($attrib['attrib_type'] == 'options') {
+			$str .= '<select style="background:lightblue" name="'.$attribName.'" >';
+			foreach($attrib['attrib_config'] as $config){
+				$selected = $attribValue == $config ? 'selected="selected"' : '';
+				$str .= '<option '.$selected.' value="'.$config.'">'.$config.'</option>';
+			}
+			$str .= '</select>';
+		}
+		$str .= '</p>';
+		echo $str;
+		$count++;
+	}
+}
+
+$msg = '<br/><strong>New Attributes Defined For This Asset\'s Category</strong><br/>';
+$msg_shown = false;
+
+$count = 0;
+if (!empty($cat_attrib_data)) {
+	foreach($cat_attrib_data as $attrib) {
+		$attribName = $attrib['attrib_name'];
+		if (isset($usedAttribs[$attribName])) continue;
+		
+		if ($msg_shown == false) {
+			echo $msg;
+			$msg_shown = true;
+		}
+		
+		$attribLabel = ucwords(str_replace('_', ' ',$attribName));
+		$attribName = str_replace(' ', '_', $attribName);
+		$attribName = 'attrib_'.strtolower($attribName);
+		
+		$str = '<p><label>';
+		$str .= $attribLabel.'</label>';
+		if ($attrib['attrib_type'] == 'yesno') {
+			$str .= '<select style="background:lightblue" name="'.$attribName.'"><option value="1">Yes</option><option value="0">No</option></select>';
+		} else if ($attrib['attrib_type'] == 'text') {
+			$str .= '<input style="background:lightblue" type="text" class="smallinput" name="'.$attribName.'"';
+			if ($attrib['attrib_required'] == 1) $str .= ' required="true" ';
+			$str .= '/>';
+		} else if ($attrib['attrib_type'] == 'number') {
+			$str .= '<input style="background:lightblue" type="number" class="smallinput" name="'.$attribName.'"';
+			if ($attrib['attrib_required'] == 1) $str .= ' required="true" ';
+			$str .= '/>';
+		} else if ($attrib['attrib_type'] == 'options') {
+			$str .= '<select style="background:lightblue" name="'.$attribName.'" >';
+			foreach($attrib['attrib_config'] as $config){
+				$str .= '<option value="'.$config.'">'.$config.'</option>';
+			}
+			$str .= '</select>';
+		}
+		$str .= '</p>';
+		echo $str;
+		$count++;
+	}
+}
+?>
+<br/>

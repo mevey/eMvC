@@ -1,0 +1,168 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+
+<?php include('common/header.php'); ?>
+
+<script type="text/javascript" src="<?php t('templatePathUrl') ?>js/custom/tables.js"></script>
+<script type="text/javascript" src="<?php t('templatePathUrl') ?>js/plugins/jquery.validate.min.js"></script>
+<script type="text/javascript" src="<?php t('templatePathUrl') ?>js/custom/forms.js"></script>
+
+
+</head>
+
+<body class="withvernav">
+
+<div class="bodywrapper">
+
+	<?php include('common/top_header.php'); ?>
+	<?php include('common/menu_header.php'); ?>
+		
+	<div class="centercontent">
+	
+		<div class="pageheader">
+			<h1 class="pagetitle">Asset Categories</h1>
+			<span class="pagedesc">Add and edit asset categories</span>
+			
+			<ul class="hornav">
+				<li><a href="<?php echo $baseUrl; ?>category">Category List</a></li>
+				<li class="current"><a>Add category</a></li>
+			</ul>
+		</div><!--pageheader-->
+		
+		<div id="contentwrapper" class="contentwrapper">
+			<div id="addCategory" class="subcontent">
+				<div class="contenttitle2">
+					<h3>Add an Asset Category</h3> 
+				</div><!--contenttitle-->
+				<br />
+				<form action="" method="post" class="quickform" id="cat_add">
+					<input name="attrib_count" id="attrib_count" type="hidden" value="1" />
+					<p>
+						<label for="title">Category name <i style="color:red">*</i></label>
+						<input type="text" name="name" id="name" class="smallinput" />
+					</p>
+					<p>
+						<label for="slug">Description <i style="color:red">*</i></label>
+						<span class="field"><textarea cols="80" rows="5"  class="longinput" name='description' id='description'></textarea></span> 
+					</p>
+					<p>
+						<label for="slug" title="The depreciation rate applied to this category of assets">Depreciation rate <i style="color:red">*</i></label>
+						<input type="number" type="number" name="dep_rate" id="dep_rate"  class="smallinput" />% p.a.
+					</p>
+					<p>
+						<label for="slug" title="The time it takes before an asset is retired.">Retire Age <i style="color:red">*</i></label>
+						<input type="number" name="retire" id="retire"  class="smallinput" /> years
+					</p>
+
+					<br/><br/>
+					<h4>Define custom attributes for this category</h4>
+					<p>Type in the attributes or characteristics of assets in this category you want to store.</p>
+					<div id="attrib_list">
+						<div id="new_attrib_1">
+							<div id="attrib_1">
+							<div style="float:left;width:175px;font-weight:bold">Name</div>
+							<div style="float:left;width:190px;font-weight:bold">Type</div>
+							<div style="float:left;width:160px;font-weight:bold">Required</div><br/>
+							<input style="float:left;width:150px;margin-right:10px" type="text" id="attrib_name_1" name="attrib_name_1" type="text"> 
+							<select onChange="toggleOptionsDiv(1)" style="float:left;width:180px;min-width:150px;margin-right:10px" id="attrib_type_1" name="attrib_type_1" >
+								<option value="text">Text</option>
+								<option value="number">Number</option>
+								<option value="yesno">Yes/No</option>
+								<option value="options">Predefined Options-List</option>
+							</select>
+							<input style="float:left;width:140px" type="checkbox" id="attrib_required_1" name="attrib_required_1" />
+							<br clear="all" />
+							
+							<div id="attrib_configdiv_1" style="display:none" >
+								<strong>Please Define a Comma-Separated List of Options</strong><br/>
+								<input style="width:150px" type="text" id="attrib_config_1" name="attrib_config_1" type="text">
+							</div>
+							
+							<a onclick="removeAttrib(1)" >[ remove this attribute ]</a><br id="br_1" clear="all" />
+							<hr style="width:450px;float:left"/>
+							</div>
+						</div>
+						<div id="new_attrib_2"></div>
+					</div>
+					
+					<br clear="all" />
+					<a class="stdbtn" onclick="addAttrib()" >Add one more attribute</a>
+					
+					<script type="text/javascript">
+						var attrib_num = 1;
+						var attrib_count = 1;
+						function addAttrib(){
+							attrib_count++;
+							document.getElementById('attrib_count').value = attrib_count;
+							
+							attrib_num++;
+							document.getElementById('new_attrib_' + attrib_num).innerHTML +=
+									getAttribHtml(attrib_num);
+							
+							return;
+						}
+						
+						function removeAttrib(num) {
+							document.getElementById('attrib_' + num).remove();
+							document.getElementById('br_' + num).remove();
+							
+							attrib_count--;
+							document.getElementById('attrib_count').value = attrib_count;
+						}
+						
+						function toggleOptionsDiv(num) {
+							value = document.getElementById('attrib_type_' + num).value;
+							if (value == "options") {
+								document.getElementById('attrib_configdiv_' + num).style.display = 'block';
+							} else {
+								document.getElementById('attrib_configdiv_' + num).style.display = 'none';
+							}
+						}
+						
+						function getAttribHtml(num) {
+							return '<br id="br_' + num + '" clear="all" /><div id="attrib_' + num + '"><div style="float:left;width:175px;font-weight:bold">Name</div>' +
+									'<div style="float:left;width:190px;font-weight:bold">Type</div>' +
+									'<div style="float:left;width:160px;font-weight:bold">Required</div><br/>' +
+									'<input style="float:left;width:150px;margin-right:10px" type="text" id="attrib_name_' + num + '" name="attrib_name_' + num + '" type="text"> ' +
+									'<select onChange="toggleOptionsDiv(' + num + ')" style="float:left;width:180px;min-width:150px;margin-right:10px" id="attrib_type_' + num + '" name="attrib_type_' + num + '" >' +
+									'<option value="text">Text</option>' +
+									'<option value="number">Number</option>' +
+									'<option value="yesno">Yes/No</option>' +
+									'<option value="options">Predefined Options-List</option>' +
+									'</select>' +
+									'<input style="float:left;width:140px" type="checkbox" id="attrib_required_' + num + '" name="attrib_required_' + num + '" />' +
+									'<br clear="all" />' +
+									'<div id="attrib_configdiv_' + num + '" style="display:none" >' +
+									'<strong>Please Define a Comma-Separated List of Options</strong><br/>' +
+									'<input style="width:150px" type="text" id="attrib_config_' + num + '" name="attrib_config_' + num + '" type="text">' +
+									'</div>' +
+									'<a onclick="removeAttrib(' + num + ')" >[ remove this attribute ]</a><br clear="all" />' +
+									'<hr style="width:450px;float:left"/></div>' +
+									'<div id="new_attrib_' + (num + 1) + '"></div>';
+						}
+					</script>
+					
+					<br clear="all" />
+					<br clear="all" />
+					<br clear="all" />
+				
+					<div class="quickformbutton">
+						<button class="update">Save</button>
+						<a href="<?php echo $baseUrl.'category'?>" class=" stdbtn cancel">Cancel</a>
+					</div><!-- button -->
+				</form>
+			</div><!-- #activities -->
+		
+		</div><!--contentwrapper-->
+		
+		<br clear="all" />
+		
+	</div><!-- centercontent -->
+	
+	
+</div><!--bodywrapper-->
+<?php include('footer.html'); ?>
+</body>
+</html>
+

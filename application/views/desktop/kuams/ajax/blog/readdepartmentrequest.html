@@ -1,0 +1,56 @@
+<div>
+	<p>Request Reference Number: <?php echo $request_data->request_reference; ?></p>
+	<p>From: <?php echo $user_data->user_surname.' '.$user_data->user_othername; ?></p>
+	<p>Category: <?php echo $cat_data->asset_category_name; ?></p>
+	<p>Model/Type: <?php echo $request_data->request_model; ?></p>
+	
+	<h5>Title: <?php echo $request_data->request_title; ?></h5>
+	<?php
+	if ($request_data->request_for_dvc == 1) {
+		if ($request_data->request_dvc_approve == 1) {
+			echo '<p style="color:green">Approved by DVC administrator</p><p>Remarks:'.$request_data->request_dvc_remarks.'</p>';
+		} else if ($request_data->request_dvc_approve == 0) {
+			echo '<p style="color:orange">Pending approval from the Deputy Vice Chancellor Administration</p>';
+		} else {
+			echo '<p style="color:red">Request Denied by DVC administrator</p>';
+		}
+	}
+	?>
+	<hr/>
+	<p><i><?php echo $request_data->request_date; ?></i></p>
+</div>
+<?php if ((Registry::checkRole(Roles::LIST_INHOUSE_REQUESTS) || Registry::checkRole(Roles::LIST_DEPARTMENT_REQUESTS)) && $request_data->request_fk_allocation_id == 0) { 
+	if (Registry::checkRole(Roles::APPROVE_REJECT_DEPT_REQUEST)) {
+?>
+
+<form id="approvalForm" action="<?php echo $baseUrl.'departmentrequest/approve_request?id='.$request_data->request_id ?>" method="post">
+	<input type="hidden" name="status" id="approvalStatus" value="" />
+	<input type="hidden" name="user_id" value="<?php echo $request_data->request_fk_user_id;?>" />
+	<p>
+		<label for="slug">Remarks</label><br/>
+		<span class="field"><textarea cols="80" rows="5" class="longinput" name='remarks' required="true"></textarea></span> 
+	</p>
+	<div class="quickformbutton">
+		<button onClick="sendApproval()" class="stdbtn">Approve</button>
+		<button onClick="sendReject()" class="stdbtn">Reject</button>
+	</div><!-- button -->
+	<script type="text/javascript">
+		function sendApproval() {
+			document.getElementById('approvalStatus').value="yes";
+			document.getElementById('approvalForm').submit();
+		}
+		function sendReject() {
+			document.getElementById('approvalStatus').value="no";
+			document.getElementById('approvalForm').submit();
+		}
+	</script>
+</form>
+<?php } } ?>
+<br class="clearAll"/>
+<form>
+	<div class="quickformbutton">
+		<button class="cancel">Close</button>
+	</div><!-- button -->
+</form>
+	<br clear="all" />
+	

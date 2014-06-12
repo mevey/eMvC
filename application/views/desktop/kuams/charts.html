@@ -1,0 +1,63 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+
+<?php include('common/header.php'); ?>
+
+<script type="text/javascript" src="<?php t('templatePathUrl') ?>js/custom/charts.js"></script>
+
+</head>
+
+<body class="withvernav">
+
+<div class="bodywrapper">
+	<?php include('common/top_header.php'); ?>
+	<?php include('common/menu_header.php'); ?>
+	
+	<div class="pageheader">
+		<h1 class="pagetitle">Reports</h1>
+		
+		<ul class="hornav">
+			<li><a href="<?php echo $baseUrl.'report' ?>"> Generate Reports</a></li>
+			<li class="current"><a>Charts</a></li>
+		</ul>
+	</div><!--pageheader-->
+	
+	<div class="contentwrapper">
+		<div id="charts" class="subcontent">
+			<p><b>Key:</b>
+				<?php 
+				foreach ($dept_data as $dept) {
+					if ($dept['department_id'] == 0) continue;
+					echo $dept['department_id']."- ".$dept['department_name']."\t\t\t";
+				}
+				?>
+			</p>
+			<div class="one_half">
+				<div class="contenttitle2">
+					<h3>Bar Graph : Department assets by value</h3>
+				</div><!--contenttitle-->
+				<br />
+				<div id="bargraph" style="height:300px;"></div>
+			</div><!--one_half-->
+			<div class="one_half last">
+				<div class="contenttitle2">
+					<h3>Bar Graph: Department assets by Numbers</h3>
+				</div><!--contenttitle-->
+				<br />
+				<div id="bargraph2" style="height:300px;"></div>
+			</div><!--one_half-->
+		<br clear="all" />
+		</div><!--#charts-->
+		
+		<div id="statistics" class="subcontent">
+			&nbsp;
+		</div><!--#statistics-->
+		
+	</div><!--contentwrapper-->
+
+	
+</div><!--bodywrapper-->
+<?php include('footer.html'); ?>
+</body>
+</html>

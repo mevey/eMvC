@@ -1,0 +1,101 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+
+<?php include('common/header.php'); ?>
+
+<script type="text/javascript" src="<?php t('templatePathUrl') ?>js/custom/tables.js"></script>
+<!-- <script type="text/javascript" src="<?php t('templatePathUrl') ?>js/plugins/jquery.dataTables.min.js"></script> -->
+
+</head>
+
+<body class="withvernav">
+
+<div class="bodywrapper">
+
+	<?php include('common/top_header.php'); ?>
+	<?php include('common/menu_header.php'); ?>
+		
+	<div class="centercontent" style="padding-bottom:50px;">
+	
+		<div class="pageheader">
+			<h1 class="pagetitle">Requests</h1>
+			<span class="pagedesc">View asset requests from the various departments</span>
+			
+			<ul class="hornav">
+				<?php if (Registry::checkRole(Roles::LIST_DEPARTMENT_REQUESTS) ) { ?>
+					<li><a href="<?php echo $baseUrl; ?>departmentrequest">Incoming requests</a></li>
+				<?php } ?>
+				<?php if (Registry::checkRole(Roles::COMPOSE_DEPARTMENT_REQUESTS && false) ) { ?>
+					<li><a href="<?php echo $baseUrl.'departmentrequest/compose' ?>">Send a request</a></li>
+				<?php } ?>
+				<?php if (Registry::checkRole(Roles::LIST_DEPARTMENT_REQUESTS) ) { ?>
+					<li class="current"><a href="<?php echo $baseUrl.'requestassign/list2'?>">Approved requests pending assignment (<?php echo $department_request_count;?>)</a></li>
+				<?php }?>
+				<?php //if (Registry::checkRole(Roles::VIEW_ORDERS) ) { ?>
+					<li><a href="<?php echo $baseUrl.'orders'?>">Orders Placed</a></li>
+				<?php //}?>
+			</ul>
+		</div><!--pageheader-->
+		
+		
+		<div id="contentwrapper" class="contentwrapper">
+		
+			<div id="assetview" class="subcontent">
+				<?php
+					if ($department_request_count == 0) {
+						echo '<br/><p style="color:red">No more approved requests pending assignment.</p>';
+					} else {
+					?>
+						<table cellpadding="5" cellspacing="0" border="0" class="stdtable stdtablequick" id="dyntable">
+							<colgroup>
+								<col class="con0" />
+								<col class="con1" />
+								<col class="con0" />
+							</colgroup>
+							<thead>
+								<tr>
+									<th class="head0">To</a></th>
+									<th class="head1">Model/Type</a></th>
+									<th class="head0">&nbsp;</th>
+								</tr>
+							</thead>
+							<tbody>
+								<?php 
+								
+								foreach ($list_data as $row) { 
+									echo '<tr>';
+									if (Registry::checkRole(Roles::ASSIGN_ASSET_TO_USER)) {
+										if ($row['request_for_dvc'] == 1) continue;
+										if ($row['request_fk_dept_id'] != Auth::getLoggedInUserData('user_fk_dept_id')) continue;
+										echo '<td class="con0">'.$row['user_surname'].' '.$row['user_othername'].'</td>';
+									} else if (Registry::checkRole(Roles::ASSIGN_ASSET_TO_DEPARTMENT)) {
+										if ($row['request_for_hod'] == 1) continue;
+										echo '<td class="con0">'.$row['department_name'].' department</td>';
+									}
+									echo '<td class="con1">'.$row['request_model'].'</td>';
+									echo '<td class="center"><a style="color:green" href="'.$baseUrl.'requestassign/assign_dept?id='.$row['request_id'].'">[Assign]</a></td>';
+									echo '</tr>';
+								}
+								?>
+							</tbody>
+						</table>
+					<?php
+					}
+					?>
+				</div>
+			</div><!-- #updates -->
+				
+		</div><!--contentwrapper-->
+		
+		<br clear="all" />
+		<br clear="all" />
+		<br clear="all" />
+		
+	</div><!-- centercontent -->
+	
+</div><!--bodywrapper-->
+<?php include('footer.html'); ?>
+</body>
+</html>
+

@@ -1,0 +1,44 @@
+<h4>Request</h4>
+<br />
+	<div>
+		<p>Request Reference Number:<?php echo $request_data->request_reference; ?>
+		From:<?php echo $user_data->user_surname.' '.$user_data->user_othername; ?>
+		Category: <?php echo $cat_data->asset_category_name; ?>
+		Model/Type: <?php echo $request_data->request_model; ?>
+		<hr/>
+		
+		<h5>Title: <?php echo $request_data->request_title; ?></h5>
+		<?php echo $request_data->request_body; ?>
+		<?php
+		if ($request_data->request_for_hod == 1) {
+			if ($request_data->request_hod_approve == 1) {
+				echo '<p style="color:green">Approved by the Head of department</p><p>Remarks:'.$request_data->request_hod_remarks.'</p>';
+			} else if ($request_data->request_hod_approve == 0) {
+				echo '<p style="color:orange">Pending approval from the Head of Department</p>';
+			} else {
+				echo '<p style="color:red">Request Denied by Head of department</p>';
+			}
+		}
+		?>
+		<?php
+		if ($request_data->request_for_dvc == 1) {
+			if ($request_data->request_dvc_approve == 1) {
+				echo '<p style="color:green">Approved by DVC administrator</p><p>Remarks:'.$request_data->request_dvc_remarks.'</p>';
+			} else if ($request_data->request_dvc_approve == 0) {
+				echo '<p style="color:orange">Pending approval from the Deputy Vice Chancellor Administration</p>';
+			} else {
+				echo '<p style="color:red">Request Denied by DVC administrator</p>';
+			}
+		}
+		?>
+		<hr/>
+		<p><i><?php echo $request_data->request_date; ?></i></p>
+	</div>
+	
+	<form>
+		<div class="quickformbutton">
+			<button class="cancel">Close</button>
+		</div><!-- button -->
+	</form>
+		<br clear="all" />
+	

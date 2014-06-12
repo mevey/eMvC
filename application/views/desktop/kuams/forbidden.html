@@ -1,0 +1,42 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+
+<?php include('common/header.php'); ?>
+
+<script type="text/javascript" src="<?php t('templatePathUrl') ?>js/custom/tables.js"></script>
+<script type="text/javascript" src="<?php t('templatePathUrl') ?>js/plugins/jquery.dataTables.min.js"></script>
+
+</head>
+
+<body class="withvernav">
+
+<div class="bodywrapper">
+
+	<?php include('common/top_header.php'); ?>
+		
+	<div class="centercontent" style="padding-bottom:50px;">
+	
+	
+	<div class="contentwrapper padding10">
+		<div class="errorwrapper error403">
+			<div class="errorcontent">
+				<h1>403 Forbidden Access</h1>
+				<h3>Your do not have permission to access that resource.</h3>
+				
+				<p>Required access-permission: <?php echo $role_name; ?></p>
+				<ul>
+					<li>If this is a mistake, contact you're HOD.</li>
+				</ul>
+				<br />
+				<button class="stdbtn btn_black" onclick="history.back()">Go Back to Previous Page</button> &nbsp; 
+				<button onclick="location.href='<?php echo $baseUrl?>dashboard'" class="stdbtn btn_orange">Go Back to Dashboard</button>
+			</div><!--errorcontent-->
+		</div><!--errorwrapper-->
+	</div>	
+	
+	
+</div><!--bodywrapper-->
+<?php include('footer.html'); ?>
+</body>
+</html>

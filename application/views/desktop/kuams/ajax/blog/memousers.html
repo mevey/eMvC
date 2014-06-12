@@ -1,0 +1,9 @@
+<label for="slug">Employees</label>
+<select name="user">
+	<?php
+	echo '<option value= "-1">All employees in the department</option>';
+	foreach ($user_data as $user) {
+		echo '<option value="'.$user['user_id'].'">'.$user['user_surname'].' '.$user['user_othername'].' - '.$user['user_role'].'</option>'."\n";
+	}
+	?>
+<select>

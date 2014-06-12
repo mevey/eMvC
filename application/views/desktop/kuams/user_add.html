@@ -1,0 +1,103 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+
+<?php include('common/header.php'); ?>
+
+<script type="text/javascript" src="<?php t('templatePathUrl') ?>js/custom/tables.js"></script>
+<script type="text/javascript" src="<?php t('templatePathUrl') ?>js/plugins/jquery.validate.min.js"></script>
+<script type="text/javascript" src="<?php t('templatePathUrl') ?>js/custom/forms.js"></script>
+
+</head>
+
+<body class="withvernav">
+
+<div class="bodywrapper">
+
+	<?php include('common/top_header.php'); ?>
+	<?php include('common/menu_header.php'); ?>
+	
+	<div class="centercontent">
+	
+		<div class="pageheader">
+			<h1 class="pagetitle">Users</h1>
+			<span class="pagedesc">Add, edit and update user Information</span>
+			
+			<ul class="hornav">
+				<li><a href="<?php t('baseUrl'); ?>user">User List</a></li>
+				<li class="current"><a>Add a user</a></li>
+				<?php if(Registry::checkRole(Roles::LIST_GROUPS)) {?>
+					<li><a href="<?php t('baseUrl'); ?>group">User Group</a></li>
+				<?php } ?>
+				<?php if(Registry::checkRole(Roles::ADD_GROUP)) { ?>
+				<li><a href="<?php t('baseUrl'); ?>group/add_group">Add a User Group</a></li>
+				<?php } ?>
+			</ul>
+		</div><!--pageheader-->
+		<div id="contentwrapper" class="contentwrapper">
+			
+			<div id="addUser" class="subcontent">
+				<form action="" id="user_add" method="post"  class="quickform">
+					<h4>Add User</h4>
+					<br />
+					<?php if (Registry::checkRole(Roles::ADD_USER)) {?>
+					<p>
+						<label for="slug">Department <i style="color:red">*</i></label>
+						<select name="dept">
+							<?php
+							foreach ($dept_data as $dept) {
+								if($dept['department_id'] == 0) continue;
+								echo '<option value="'.$dept['department_id'].'">'.$dept['department_name'].'</option>'."\n";
+							}
+							?>
+						</select>
+					</p>
+					<?php } else { 
+						foreach ($dept_data as $dept) {
+							if ($dept['department_id'] == Auth::getLoggedInUserData('user_fk_dept_id')){
+								echo '<b>Department: </b>'. $dept['department_name'];
+							}
+						}
+					}?>
+					 <p>
+						<label title="Number unique to every employee" >Employment number<i style="color:red">*</i></label>
+						<span class="field"><input type="text" id="emp_number" name="emp_number" class="smallinput"/></span>
+					</p>
+					<p>
+						<label for="date">Date of employment <i style="color:red">*</i></label>
+						<input type="text" id="date" name="employment_date" class="smallinput" />
+					</p>
+					 <p>
+						<label title="Categories define the rights a user has to the system" >Category of the User <i style="color:red">*</i></label>
+						<select name="category">
+							<?php
+							foreach ($category_data as $cat) {
+								if ($cat['group_id'] == 0) continue;
+								echo '<option value="'.$cat['group_id'].'">'.$cat['group_name'].'</option>'."\n";
+							}
+							?>
+						</select>
+					</p>
+					 <p>
+						<label title="The position a user holds in a department e.g.chairman, secretary etc." > User's Position/Role <i style="color:red">*</i></label>
+						<span class="field"><input type="text" name="role" id="role" class="smallinput" /></span>
+					</p>
+					<br class='clearall'>
+					
+					<div class="quickformbutton">
+						<button class="update">Save</button>
+						<a href="<?php echo $baseUrl.'user'?>" class=" stdbtn cancel">Cancel</a>
+					</div><!-- button -->
+				</form>
+			</div><!-- #activities -->
+			
+		</div>
+		
+	</div><!-- centercontent -->
+	
+	
+</div><!--bodywrapper-->
+<?php include('footer.html'); ?>
+</body>
+</html>
+

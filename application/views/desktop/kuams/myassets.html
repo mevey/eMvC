@@ -1,0 +1,99 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+
+<?php include('common/header.php'); ?>
+
+<script type="text/javascript" src="<?php t('templatePathUrl') ?>js/custom/tables.js"></script>
+<!-- <script type="text/javascript" src="<?php t('templatePathUrl') ?>js/plugins/jquery.dataTables.min.js"></script> -->
+
+</head>
+
+<body class="withvernav">
+
+<div class="bodywrapper">
+
+	<?php include('common/top_header.php'); ?>
+	<?php include('common/menu_header.php'); ?>
+		
+	<div class="centercontent" style="padding-bottom:50px;">
+	
+		<div class="pageheader">
+			<h1 class="pagetitle">My Assets</h1>
+			<span class="pagedesc">Lists assets assigned you</span>
+			
+			<ul class="hornav">
+				<li class="current"><a>Asset List</a></li>
+			</ul>
+		</div><!--pageheader-->
+		
+		
+		<div id="contentwrapper" class="contentwrapper">
+		
+			<div id="assetview" class="subcontent">
+				<?php
+					if (count($list_data) == 0) {
+						echo '<br/><p style="color:red">You have not been assigned any assets.</p>';
+					} else {
+					?>
+						<div class="contenttitle2">
+							<h3>My Assets</h3>
+							<p>In case of any problems be sure to make a maintenance request</p>
+						</div><!--contenttitle-->
+						<table cellpadding="5" cellspacing="0" border="0" class="stdtable stdtablequick" id="dyntable">
+							<colgroup>
+								<col class="con0" />
+								<col class="con1" />
+								<col class="con0" />
+								<col class="con1" />
+								<col class="con0" />
+								<col class="con1" />
+							</colgroup>
+							<thead>
+								<tr>
+									<th class="head0">Asset Model/Type</a></th>
+									<th class="head1">Asset Category</a></th>
+									<th class="head0">Asset Supply Date</a></th>
+									<th class="head1">Asset Assignment Date</a></th>
+									<th class="head0">&nbsp;</th>
+								</tr>
+							</thead>
+							<tbody>
+								<?php 
+								
+								foreach ($list_data as $row) {
+									foreach ($category_data as $cat) {
+										if ($cat['asset_category_id'] == $row['asset_fk_cat_id']){
+											$category = $cat['asset_category_name'];
+										}
+									}
+									echo '<tr>';
+									echo '<td class="con0">'.$row['asset_model'].'</td>';
+									echo '<td class="con1">'.$category.'</td>';
+									echo '<td class="con0">'.$row['asset_supply_date'].'</td>';
+									echo '<td class="con1">'.$row['allocation_date'].'</td>';
+									echo '<td class="center"><a href="'.$baseUrl.'myasset/view_my_asset?id='.$row['asset_id'].'">View/Schedule Maintenance</a></td>';
+									echo '</tr>';
+								}
+								?>
+							</tbody>
+						</table>
+					<?php
+					}
+					?>
+				</div>
+			</div><!-- #updates -->
+				
+		</div><!--contentwrapper-->
+		
+		<br clear="all" />
+		<br clear="all" />
+		<br clear="all" />
+		
+	</div><!-- centercontent -->
+	
+</div><!--bodywrapper-->
+<?php include('footer.html'); ?>
+</body>
+</html>
+

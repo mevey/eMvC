@@ -1,0 +1,98 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+
+<?php include('common/header.php'); ?>
+<script type="text/javascript" src="<?php t('templatePathUrl') ?>js/custom/dashboard.js"></script>
+
+</head>
+
+<body class="withvernav">
+
+<div class="bodywrapper">
+
+	<?php include('common/top_header.php'); ?>
+	<?php include('common/menu_header.php'); ?>
+		
+	<div class="centercontent">
+	
+		<div class="pageheader">
+			<h1 class="pagetitle">Home</h1>
+		</div><!--pageheader-->
+		
+		<div id="contentwrapper" class="contentwrapper">
+		
+			<div id="updates" class="subcontent">
+				<div class="two_third dashboard_left">
+					<div class="contenttitle2 nomargintop">
+						<h3>Latest Notifications</h3>
+					</div><!--contenttitle-->
+					<div class="widgetcontent userlistwidget nopadding">
+						<div class="widgetbox">
+							<ul>
+								<?php 
+								$count = 0;
+								foreach($notifications as $n) {
+									if (Auth::getLoggedInUserData('user_last_login') < $n['log_date']) {
+										$count++;
+									}
+								}
+								if ($count == 0) {
+									echo '<div class="notibar msginfo" ><a class="close"></a><p>You do not have any new notifications.</p></div>';
+								} else {
+									if ($count == 1) {
+										echo '<div class="notibar msginfo"><a class="close"></a><p>You have <b>'.$count.'</b> new notification.</p></div>';
+									} else {
+										echo '<div class="notibar msginfo"><a class="close"></a><p>You have <b>'.$count.'</b> new notifications.</p></div>';
+									}
+									$flag = true;
+									foreach($notifications as $n) {
+										if (Auth::getLoggedInUserData('user_last_login') > $n['log_date'] && $flag){
+											echo '</ul></div></div><br/><br/>';
+											echo '<div class="contenttitle2 nomargintop"><h3>Older Notifications</h3></div><!--contenttitle-->';
+											echo '<div class="widgetcontent userlistwidget nopadding"><div class="widgetbox"><ul>';
+											$flag = false;
+										}
+										echo '<li style="height:60px">';
+										echo '<div class="avatar"><img alt="" src="'.Registry::getUserAvatarUrl($n['log_by_user_id']).'" height="60px;"/></div>';
+										echo '<div class="info">';
+										echo $n['log_description'].'<br/>';
+										echo '<i style="float:right">'.$n['log_date'].'</i>';
+										echo '</div>';
+										echo '</li>';
+									}
+								}
+								?>
+							</ul>
+						</div>
+					</div>
+				</div>
+				<div class="one_third last dashboard_right">
+					 <div class="widgetbox">
+						<div class="title"><h3>Latest News</h3></div>
+						<div class="widgetcontent">
+							<div id="accordion" class="accordion">
+								<?php 
+									foreach($news_data as $news) {
+										echo '<h3><a href="#">'.$news['news_title'].'</a></h3>';
+										echo '<div><p>'.stripslashes($news['news_body']).'</p>';
+										echo '<i>'.$news['news_date'].'</i></div>';
+									}
+								?>
+							</div>     
+						  </div> <!--widgetcontent-->
+					 </div><!--widgetbox-->
+				</div>
+				<br clear="all" />
+			</div><!-- #updates -->
+		</div><!--contentwrapper-->
+		
+		<br clear="all" />
+		
+	</div><!-- centercontent -->
+	
+	
+</div><!--bodywrapper-->
+<?php include('footer.html'); ?>
+</body>
+</html>

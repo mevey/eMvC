@@ -1,0 +1,59 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+
+<?php include('common/header.php'); ?>
+
+<script type="text/javascript" src="<?php t('templatePathUrl') ?>js/custom/tables.js"></script>
+<script type="text/javascript" src="<?php t('templatePathUrl') ?>js/plugins/jquery.dataTables.min.js"></script>
+
+</head>
+
+<body class="withvernav">
+
+<div class="bodywrapper">
+
+	<?php include('common/top_header.php'); ?>
+		
+	<div class="centercontent" style="padding-bottom:50px;"><br/>
+		<button class="stdbtn" onclick="window.location='<?php echo $baseUrl.'report'?>'">&laquo; Go Back</button>
+		<center><h1 style="text-decoration:underline;">ASSET REGISTER</h1><br/>
+		<div class="one_half">
+			<p>
+				<?php foreach ($media as $img) { ?>
+				<img class="img" src="<?php echo $baseUrl.$img['asset_media_url_path']?>" style="height:100px;border: 1px solid #eee;"/>
+				<?php } ?>
+			</p>
+			<p>
+				<label><b>Tag ID: </b></label><?php echo $data->asset_tag_id; ?><br/>
+				<label for="slug"><b>Category: </b></label><?php echo $category_name; ?><br/>
+				<label for="slug"><b>Model/Type: </b></label><?php echo $data->asset_model; ?><br/>
+				<label for="slug" title="The asset's initial cost"><b>Cost: </b></label><?php echo $data->asset_cost; ?><br/>
+				<label for="date"><b>Supply Date: </b></label><?php echo $data->asset_supply_date; ?>
+			</p>
+			
+		</div><!-- one_half -->
+		
+		<div class="one_half last">
+			<h4>Asset History</h4>
+			<?php 
+			if (is_array($history) && count($history) != 0) {
+				foreach ($history as $h) {
+					echo '<p style="padding:5px;">'.$h['log_asset_description'];
+					echo '<br/><i>'.$h['log_date'].'</i></p>';
+				}
+			} else {
+				echo 'No asset history recorded';
+			}
+			?>
+		<br class="clearall">
+		<br class="clearall">
+		<button  class="stdbtn" onclick="window.location(<?php echo $baseUrl.'reports'?>)"><img src="<?php echo $templatePathUrl.'images/pdf.jpg'?>" width="20px;"/>Print to PDF</button><br/><br/>
+		</div><!-- one_half last -->
+	</div><!-- centercontent -->
+</div><!--bodywrapper-->
+<?php include('footer.html'); ?>
+</body>
+</html>
+
+

@@ -1,0 +1,24 @@
+<h4>Edit Group Information</h4>
+<br />
+<form action=" <?php t('baseUrl') ?>quick/update_group" method="post" class="quickform">
+	<input type="hidden" name="id" value='<?php echo $data->group_id; ?>'/>
+	<div  class="one_half">
+		 <p>
+			<label>Name</label>
+			<input type="text" name="name" class="smallinput" value='<?php echo $data->group_name; ?>' />
+		</p>
+		 <p>
+			<label>Description</label>
+			<textarea name="description"><?php echo $data->group_description; ?></textarea>
+		</p>
+	</div><!-- one_half last -->
+	
+	<br class='clearall'>
+	
+	<div class="quickformbutton">
+		<button class="update">Update</button>
+		<a class="stdbtn" href="<?php echo $baseUrl ?>group/delete_group?id=<?php echo $data->group_id ?>">Delete</a>
+		<button class="cancel" style="float:right;">Close</button>
+	</div><!-- button -->
+</form>
+

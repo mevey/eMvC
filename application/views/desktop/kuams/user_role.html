@@ -1,0 +1,202 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+
+<?php include('common/header.php'); ?>
+
+<script type="text/javascript" src="<?php t('templatePathUrl') ?>js/custom/tables.js"></script>
+
+</head>
+
+<body class="withvernav">
+
+<div class="bodywrapper">
+
+	<?php include('common/top_header.php'); ?>
+	<?php include('common/menu_header.php'); ?>
+
+	<div class="centercontent">
+	
+		<div class="pageheader">
+			<h1 class="pagetitle">User Roles</h1>
+			<span class="pagedesc">Add, edit and update group role information</span>
+			<ul class="hornav">
+				<li><a href="<?php t('baseUrl'); ?>user">User List</a></li>
+				<li><a href="<?php t('baseUrl'); ?>user/add">Add a user</a></li>
+				<li><a href="<?php t('baseUrl'); ?>group">User Group</a></li>
+				<li><a href="<?php t('baseUrl'); ?>group.add_group">Add a User Group</a></li>
+				<li class="current"><a>User Specific Roles</a></li>
+			</ul>
+		</div><!--pageheader-->
+		<div id="contentwrapper" class="contentwrapper">
+		
+			<div id="userview" class="subcontent">
+			<p><button class="stdbtn" onclick="window.location='<?php t('baseUrl'); ?>user'" style="float:left">&laquo; Back</button></p><br/><br/>
+		
+				<h5>
+					Permissions For :
+					User: <?php echo $user_data['user_surname'].' '.$user_data['user_othername'] ?>, 
+					Group: <?php echo $group_data['group_name']; ?><br/>
+				</h5>
+				<br />
+				<?php 
+				
+				if (true) { ?>
+				<div >
+					
+						<?php
+						$roles_already_granted = array();
+						$denied_group_roles_ids = array();
+						if (empty($group_roles)) {
+							echo '<p style="color:red">No group role  data is currently defined for this User.</p>' ;
+						} else {
+						?>
+						 <div class="contenttitle2">
+							<h4>Group Permissions</h4>
+						</div><!--contenttitle-->
+						<p>These are permissions granted to the user's group.</p>
+						<table cellpadding="5" cellspacing="0" border="0" class="stdtable">
+							<colgroup>
+								<col class="con0" />
+								<col class="con1" />
+								<col class="con0" />
+							</colgroup>
+							<thead>
+								<tr>
+									<th class="head0" ><a>Role Name</a></th>
+									<th class="head0" ><a>Role Description</a></th>
+									<th class="head0">Click To Toggle</th>
+								</tr>
+							</thead>
+							<tbody>
+						<?php
+						foreach ($denied_user_roles as $d) {
+							$denied_group_roles_ids[$d['role_id']] = 1;
+						}
+
+						foreach ($group_roles as $row){
+							$roles_already_granted[$row['role_id']] = 1;
+							if (isset($denied_group_roles_ids[$row['role_id']])) {
+								$grant_link = $baseUrl.'user/grant_group_role?id='.$row['role_id'].'&user_id='.$user_data['user_id'];
+								$grant = '[ <b><a style="color:red" href="'.$grant_link.'">Denied</a></b> ]';
+							} else {
+								$deny_link = $baseUrl.'user/deny_group_role?id='.$row['role_id'].'&user_id='.$user_data['user_id'];
+								$grant = '[ <b><a style="color:green" href="'.$deny_link.'">Allowed</a></b> ]';
+							}
+							
+							echo '<tr>';
+							echo '<td class="center">'.$row['role_alias'].'</td>';
+							echo '<td class="center">'.$row['role_description'].'</td>';
+							echo '<td class="center"><a>'.$grant.' </a></td>';
+							echo '<tr>';
+						}
+						?>
+							</tbody>
+						</table>
+					<?php } ?>
+					
+						<?php
+						if (empty($user_roles)) {
+							echo '<p style="color:red">No special permissions are currently defined for this User.</p>' ;
+						} else {
+						?>
+						<div class="contenttitle2">
+							<h4>Special User Permissions</h4>
+						</div><!--contenttitle-->
+						<p>These are permissions specifically granted to this user and are not granted to the user's group.</p>
+						<table cellpadding="5" cellspacing="0" border="0" class="stdtable">
+							<colgroup>
+								<col class="con0" />
+								<col class="con1" />
+								<col class="con0" />
+								<col class="con1" />
+							</colgroup>
+							<thead>
+								<tr>
+									<th class="head0" ><a>Role Name</a></th>
+									<th class="head0" ><a>Role Description</a></th>
+									<th class="head0">&nbsp;</th>
+									<th class="head0">&nbsp;</th>
+								</tr>
+							</thead>
+							<tbody>
+						<?php
+						foreach ($user_roles as $row){
+							$roles_already_granted[$row['role_id']] = 1;
+							echo '<tr>';
+							echo '<td class="center">'.$row['role_alias'].'</td>';
+							echo '<td class="center">'.$row['role_description'].'</td>';
+							echo '<td class="center"><a><b style="color:green">Allowed</b> </a></td>';
+							if ($row['role_name'] == '*'){
+								echo '<td>-</td>';
+							} else {
+								echo '<td class="close"><a href="'.$baseUrl.'user/delete_user_role?id='.$row['user_role_id'].'&user_id='.$row['user_id'].'">Remove</a></td>';
+							}
+							echo '<tr>';
+						}
+						?>
+							</tbody>
+						</table>
+					<?php } ?>
+					
+				</div><!-- one_half last -->
+				
+				<br class='clearall'>
+				
+				<form method="post" action="<?php echo $baseUrl.'user/add_user_role';?>">
+					<input type="hidden" name="user_id" value='<?php echo $user_data['user_id']; ?>'/>
+					
+						<?php
+						if (count($all_roles) == count($roles_already_granted)) {
+							echo '<strong>All additional special permissions have been granted for this user</strong>';
+						} else { ?>
+							<div class="contenttitle2">
+								<h4>Grant More Permissions</h4>
+							</div>
+							<p>Select a role from the dropdown list below to assign.</p>
+							<select name="role_id">
+							<?php
+								foreach ($all_roles as $r) {
+									if (isset($roles_already_granted[$r['role_id']]) || $r['role_name'] == '*') continue;
+									echo '<option value="'.$r['role_id'].'">'.$r['role_alias'].'</option>';
+								}
+							?>
+							</select>
+							<input type="submit"class="stdbtn" value="Grant Permission" />
+						<?php
+						}
+						?>
+					
+				</form> 
+				<br/><br/><br/>
+				<?php } else {?>
+					<table cellpadding="5" cellspacing="0" border="0" class="stdtable">
+								<colgroup>
+									<col class="con0" />
+									<col class="con1" />
+								</colgroup>
+								<thead>
+									<tr>
+										<th class="head0" ><a>Role Name</a></th>
+										<th class="head0" ><a>Role Description</a></th>
+									</tr>
+								</thead>
+								<tbody>
+								<tr>
+									<td>Super Admin</td>
+									<td>Grants full access to the system</td>
+								</tr>
+								</tbody>
+							</table>
+				<?php } ?>	
+			</div><!-- #updates -->
+			
+		</div>
+		
+	</div><!-- centercontent -->
+	
+	
+</div><!--bodywrapper-->
+<?php include('footer.html'); ?>
+</body>
+</html>

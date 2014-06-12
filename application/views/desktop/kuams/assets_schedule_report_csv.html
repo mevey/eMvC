@@ -1,0 +1,137 @@
+<head>
+	<?php
+		header('Content-Type: application/csv');
+		header('Content-disposition: attachment; filename=report_'.date('YmdHis').'.xls');
+		header('Pragma: ');
+		header('Cache-Control: ');
+	?>
+	</head>
+<table>
+FIXED ASSETS SCHEDULE,
+<?php echo 'From '.$date_from.' to '.$date_to; ?>
+
+  ,  ,<?php
+			foreach($category_data as $cat) {
+				echo $cat['asset_category_name'].',';
+			}
+		?>
+
+  ,  ,<?php 
+	foreach($category_data as $cat) {
+		echo 'Ksh,';
+	}
+	?>Ksh,
+As at start, ,<?php 
+	$sum = 0;
+	$count = 0;
+	foreach($startSum as $cat) {
+		$sum +=$cat;
+		echo $cat.',';
+		$count++;
+	}
+	echo $sum.',' ?>
+
+Additions, ,<?php 
+	$sum =0;
+	foreach($additions as $cat) {
+		$sum +=$cat;
+		echo $cat.',';
+	}
+	echo $sum.',' ?>
+
+Disposals, ,<?php 
+	$sum =0;
+	foreach($disposals as $cat) {
+		$sum +=$cat;
+		echo $cat.',';
+	}
+	echo $sum ?>,
+As at end, ,<?php 
+	foreach($category_data as $cat) {
+		echo '3432233'.',';
+	}
+	echo '4324345' . ',' ?>
+
+Depreciation, ,<?php 
+	foreach($category_data as $cat) {
+		echo $cat['asset_category_depreciation_rate'].'%,';
+	}
+	?>
+	<td><b>4,324,345</b></td>
+</tr>
+<tr >
+	<td><b>As at start</b></td>
+	<td>&nbsp;</td>
+	<?php 
+	foreach($category_data as $cat) {
+		echo '<td><b>3,432,233</b></td>';
+	}
+	?>
+	<td><b>4,324,345</b></td>
+</tr>
+<tr >
+	<td>Charge of the year</td>
+	<td>&nbsp;</td>
+	<?php 
+	foreach($category_data as $cat) {
+		echo '<td>3,432,233</td>';
+	}
+	?>
+	<td><b>4,324,345</b></td>
+</tr>
+<tr >
+	<td>Disposals</td>
+	<td>&nbsp;</td>
+	<?php 
+	foreach($category_data as $cat) {
+		echo '<td>3,432,233</td>';
+	}
+	?>
+	<td><b>4,324,345</b></td>
+</tr>
+<tr >
+	<td><b>As at end</b></td>
+	<td>&nbsp;</td>
+	<?php 
+	foreach($category_data as $cat) {
+		echo '<td><b>3,432,233</b></td>';
+	}
+	?>
+	<td><b>4,324,345</b></td>
+</tr>
+<tr>
+	<td colspan="7">&nbsp;</td>
+</tr>
+<tr >
+	<td><b>Net Book Value</b></td>
+	<td>&nbsp;</td>
+	<?php 
+	foreach($category_data as $cat) {
+		echo '<td>3,432,233</td>';
+	}
+	?>
+	<td><b>4,324,345</b></td>
+</tr>
+<tr >
+	<td><b>As at end</b></td>
+	<td>&nbsp;</td>
+	<?php 
+	foreach($category_data as $cat) {
+		echo '<td>3,432,233</td>';
+	}
+	?>
+	<td><b>4,324,345</b></td>
+</tr>
+<tr >
+	<td><b>As at start</b></td>
+	<td>&nbsp;</td>
+	<?php 
+	foreach($category_data as $cat) {
+		echo '<td>3,432,233</td>';
+	}
+	?>
+	<td><b>4,324,345</b></td>
+</tr>
+</table>
+</body>
+</html>

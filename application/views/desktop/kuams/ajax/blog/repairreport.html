@@ -1,0 +1,37 @@
+<h4>Repair report</h4>
+<br />
+<form action="" method="post" class="quickform">
+	<div class="one_half">
+		<p>
+			<label for="title">Asset tag id</label>
+			<input type="text" name="atagid" />
+		</p>
+		<p>
+			<label for="slug">Asset category</label>
+			<select>
+			<option>Machinery and equipment</option>
+			<option>Buildings and structures</option>
+			<option>Furniture and Fixtures</option>
+			<option>Computers and Electronics</option>
+			</select>
+		</p>
+		
+		
+	</div><!-- one_half -->
+	
+	<div class="one_half last">
+		<p>
+			<label for="slug">Asset model</label>
+			<input type="text" name="amodel" />
+		</p>
+		
+	</div><!-- one_half last -->
+	
+	<br clear="all" />
+	
+	<div class="quickformbutton">
+		<button class="update">Save</button>
+		<button class="cancel">Cancel</button>
+		<span class="loading"><img src="<?php t('templatePathUrl') ?>images/loaders/loader3.gif" alt="" />Updating changes...</span>
+	</div><!-- button -->
+</form>

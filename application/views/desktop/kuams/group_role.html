@@ -1,0 +1,112 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+
+<?php include('common/header.php'); ?>
+
+<script type="text/javascript" src="<?php t('templatePathUrl') ?>js/custom/tables.js"></script>
+
+</head>
+
+<body class="withvernav">
+
+<div class="bodywrapper">
+
+	<?php include('common/top_header.php'); ?>
+	<?php include('common/menu_header.php'); ?>
+
+	<div class="centercontent">
+	
+		<div class="pageheader">
+			<h1 class="pagetitle">User Group Roles</h1>
+			<span class="pagedesc">Add, edit and update group role information</span>
+			<ul class="hornav">
+				<li><a href="<?php t('baseUrl'); ?>user">User List</a></li>
+				<li><a href="<?php t('baseUrl'); ?>user/add">Add a user</a></li>
+				<li><a href="<?php t('baseUrl'); ?>group">User Group</a></li>
+				<li class="current"><a>Group Permissions</a></li>
+			</ul>
+		</div><!--pageheader-->
+		<div id="contentwrapper" class="contentwrapper">
+		
+			<div id="userview" class="subcontent">
+			<p><button class="stdbtn" onclick="window.location='<?php t('baseUrl'); ?>group'" style="float:left">&laquo; Back</button></p><br/><br/>
+			
+				<?php $group_role_ids = array();?>
+				<h4>Permissions Granted For: <?php echo $data->group_name; ?></h4>
+				<br />
+				<div  class="one_half">
+					<?php
+						if (empty($role_data)) {
+							echo '<p style="color:red">No role data is currently defined for this group.</p>' ;
+						} else {
+						?>
+						 <div class="contenttitle2">
+							<h3>Permissions</h3>
+						</div><!--contenttitle-->
+
+					<table cellpadding="5" cellspacing="0" border="0" class="stdtable">
+						<colgroup>
+							<col class="con0" />
+							<col class="con1" />
+							<col class="con0" />
+						</colgroup>
+						<thead>
+							<tr>
+								<th class="head0" ><a>Role Name</a></th>
+								<th class="head0" ><a>Role Description</a></th>
+								<th class="head0">&nbsp;</th>
+							</tr>
+						</thead>
+						<tbody>
+					<?php
+					foreach ($role_data as $row){
+						$group_role_ids[$row['role_id']] = 1;
+						echo '<tr>';
+						echo '<td class="center">'.$row['role_alias'].'</td>';
+						echo '<td class="center">'.$row['role_description'].'</td>';
+						echo '<td class="center"><a href="'.$baseUrl.'group/delete_group_role?id='.$row['group_role_id'].'">Remove </a></td>';
+						echo '<tr>';
+					}
+					?>
+					</tbody>
+				</table>
+				<br class='clearall'>
+				<?php } ?>
+				<br/><br/>
+				<form method="post" action="<?php echo $baseUrl.'group/add_role';?>">
+					<input type="hidden" name="group_id" value='<?php echo $data->group_id; ?>'/>
+					
+						<?php
+						if (count($all_roles) == count($group_role_ids)) {
+							echo '<strong>All permissions have been granted for this group</strong>';
+						} else { ?>
+							<h4>Grant More Permissions</h4>
+							<select name="role_id">
+							<?php
+								foreach ($all_roles as $r) {
+									if (isset($group_role_ids[$r['role_id']]) || $r['role_name'] == '*') continue;
+									echo '<option value="'.$r['role_id'].'">'.$r['role_alias'].'</option>';
+								}
+							?>
+							</select>
+							<input type="submit" class="stdbtn" value="Grant Permission" />
+						<?php
+						}
+						?>
+					
+				</form> 
+				<br/><br/><br/>
+			</div><!-- #updates -->
+			
+		</div>
+		
+	</div><!-- centercontent -->
+	
+	
+</div><!--bodywrapper-->
+<?php include('footer.html'); ?>
+</body>
+</html>
+
+

@@ -1,0 +1,5 @@
+# Protect hidden files from being viewed
+<Files *.html>
+	Order Deny,Allow
+	Deny From All
+</Files>

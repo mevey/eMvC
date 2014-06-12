@@ -1,0 +1,83 @@
+<h4>Edit User Information</h4>
+<br />
+<form action=" <?php t('baseUrl') ?>quick/update_user" method="post" class="quickform">
+	<input type="hidden" name="id" value='<?php echo $data->user_id; ?>'/>
+	<div  class="one_third">
+		<p>
+			<img src="<?php echo Registry::getUserAvatarUrl($data->user_id) ?>" height="80px"/></p>
+		<p>
+		 <p>
+			<label><b>Surname </b></label><p><?php echo $data->user_surname; ?></p>
+		</p>
+		
+		 <p>
+			<label><b>Other name </b></label><p><?php echo $data->user_othername; ?></p>
+		</p>
+
+		
+	</div>
+	<div class="one_third">
+		<p>
+			<label for="slug"><b>Department </b></label>
+			<select name="dept">
+				<?php
+				foreach ($dept_data as $dept) {
+					$selected = '';
+					if ($dept['department_id'] == $data->user_fk_dept_id) {
+						$selected = 'selected="selected"';
+					}
+					echo '<option '.$selected.'value="'.$dept['department_id'].'">'.$dept['department_name'].'</option>'."\n";
+				}
+				?>
+			</select>
+		</p>
+		 <p>
+			<label><b>Employment number </b></label>
+			<span class="field"><input type="text" name="emp_number" class="smallinput" value='<?php echo $data->user_employment_number; ?>' /></span>
+		</p>
+		<p>
+			<label for="date"><b>Date of employment </b></label>
+			<input type="text" id="date" name="employment_date" class="smallinput" value='<?php echo $data->user_employment_date; ?>' />
+		</p>
+		 <p>
+			<label><b>Category of the User </b></label>
+			<select name="category">
+				<?php
+				foreach ($user_category_data as $cat) {
+					$selected = '';
+					if ($cat['group_id'] == $data->user_fk_cat_id) {
+						$selected = 'selected="selected"';
+					}
+					echo '<option '.$selected.'value="'.$cat['group_id'].'">'.$cat['group_name'].'</option>'."\n";
+				}
+				?>
+			</select>
+		</p>
+		 <p>
+			<label><b>User's Position/Role </b></label>
+			<span class="field"><input type="text" name="role" class="smallinput" value='<?php echo $data->user_role; ?>' /></span>
+		</p>
+	</div><!-- one_half last -->
+	<div class="one_third last">
+		<?php if ($data->user_email != '') echo '<p><label><b>National ID/Passport number:  </b></label>'.$data->user_id_number.'</p>'; ?>
+		<p><br/>
+		<?php if ($data->user_email != '') {?>
+		<label><b> Email Address: </b></label>
+		<?php 
+			echo '<u>'.$data->user_email.'</u>'; 
+		} ?>
+		</p><br/>
+		<?php if ($data->user_phone_number != '') echo '<p><label><b>Contact/Office/Mobile Number:  </b></label>'.$data->user_phone_number.'</p><br/>'; ?>
+		<?php if ($data->user_office != '') {
+			echo '<p><label><b>Office/ Area of work: </b></label><span class="field">'. $data->user_office.' </span></p>';
+		}
+		?>
+	</div>
+	<br class='clearall'>
+	
+	<div class="quickformbutton">
+		<button class="update">Update</button>
+		<button class="cancel" style="float:right;">Close</button>
+		<span class="loading"><img src="<?php t('templatePathUrl') ?>images/loaders/loader3.gif" alt="" />Updating changes...</span>
+	</div><!-- button -->
+</form>

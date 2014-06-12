@@ -1,0 +1,43 @@
+<?php
+$msg = '';//'<br/><strong>Asset Attributes</strong><br/>';
+$msg_shown = false;
+
+$str = '';
+$attribName = '';
+$allAttribNames = '';
+$count = 0;
+$usedAttribs = array();
+if (!empty($attrib_data)) {
+	foreach($attrib_data as $attrib) {
+		$attribName = $attrib['attrib_name'];
+		$usedAttribs[$attribName] = 1;
+		$attribLabel = ucwords(str_replace('_', ' ',$attribName));
+		$attribValue = $attrib['attrib_value'];
+		$attribName = str_replace(' ', '_', $attribName);
+		$attribName = 'attrib_'.strtolower($attribName);
+		
+		if ($msg_shown == false) {
+			echo $msg;
+			$msg_shown = true;
+		}
+		
+		$str = '<p><label><b>';
+		$str .= $attribLabel.': </b></label>';
+		if ($attrib['attrib_type'] == 'yesno') {
+			$selected = $attribValue == '1' ? ' Yes' : ' No';
+			$str .=$selected;
+		} else if ($attrib['attrib_type'] == 'text') {
+			$str .= ''.$attribValue.'';
+		} else if ($attrib['attrib_type'] == 'number') {
+			$str .= ''.$attribValue;
+		} else if ($attrib['attrib_type'] == 'options') {
+				foreach($attrib['attrib_config'] as $config){
+				$selected = $attribValue == $config ? ''.$config : '';
+				$str .= $selected;
+			}
+		}
+		$str .= '</p>';
+		echo $str;
+		$count++;
+	}
+}

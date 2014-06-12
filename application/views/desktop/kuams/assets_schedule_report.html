@@ -1,0 +1,208 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+
+<?php include('common/header.php'); ?>
+
+<script type="text/javascript" src="<?php t('templatePathUrl') ?>js/custom/tables.js"></script>
+<!-- <script type="text/javascript" src="<?php t('templatePathUrl') ?>js/plugins/jquery.dataTables.min.js"></script> -->
+
+</head>
+
+<body class="withvernav">
+
+<div class="bodywrapper">
+
+	<?php include('common/top_header.php'); ?>
+	<div class="centercontent" style="padding-bottom:50px;">
+		<div id="contentwrapper" class="contentwrapper">
+			<button class="stdbtn" onclick="window.location='<?php echo $baseUrl.'report'?>'">&laquo; Go Back</button>
+			<center><h1 style="text-decoration:underline;">FIXED ASSETS SCHEDULE</h1><br/>
+			<?php echo 'From '.$date_from.' to '.$date_to; ?><br/>
+			<table style="border:none;">
+				<?php 
+					$width = 80/$cat_count;
+				?>
+				<colgroup>
+					<col class="con0" width="7%"/>
+					<col class="con1" width="7%"/>
+					<?php for($i = 1; $i <= $cat_count; $i++) {
+						echo '<col class="con1" width="'.$width.'%"/>';
+					}
+					?>
+					<col class="con1" width="6%"/>
+				</colgroup>
+				<tr style="padding:100px;">
+					<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+					<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+					<?php
+						foreach($category_data as $cat) {
+							echo '<td>'.$cat['asset_category_name'].'</td>';
+						}
+					?>
+					<td><b>Total</b></td>
+				</tr>
+				<tr >
+					<td>&nbsp;</td>
+					<td>&nbsp;</td>
+					<?php 
+					foreach($category_data as $cat) {
+						echo '<td>Ksh</td>';
+					}
+					?>
+					<td><b>Ksh</b></td>
+				</tr>
+				<tr>
+					<td colspan="9"><hr/></td>
+				</tr>
+				<tr >
+					<td><b>As at start</b></td>
+					<td>&nbsp;</td>
+					<?php 
+					$sum = 0;
+					$count = 0;
+					foreach($startSum as $cat) {
+						$sum +=$cat;
+						echo '<td>'.number_format($cat).'</td>';
+						$count++;
+					}
+					?>
+					<td><b><?php echo number_format($sum) ?></b></td>
+				</tr>
+				<tr >
+					<td>Additions</td>
+					<td>&nbsp;</td>
+					<?php 
+					$sum =0;
+					foreach($additions as $cat) {
+						$sum +=$cat;
+						echo '<td>'.number_format($cat).'</td>';
+					}
+					?>
+					<td><b><?php echo number_format($sum) ?></b></td>
+				</tr>
+				<tr >
+					<td>Disposals</td>
+					<td>&nbsp;</td>
+					<?php 
+					$sum =0;
+					foreach($disposals as $cat) {
+						$sum +=$cat;
+						echo '<td>'.number_format($cat).'</td>';
+					}
+					?>
+					<td><b><?php echo number_format($sum) ?></b></td>
+				</tr>
+				<tr >
+					<td><b>As at end</b></td>
+					<td>&nbsp;</td>
+					<?php 
+					foreach($category_data as $cat) {
+						echo '<td><b>3,432,233</b></td>';
+					}
+					?>
+					<td><b>4,324,345</b></td>
+				</tr>
+				<tr>
+					<td colspan="7">&nbsp;</td>
+				</tr>
+				<tr >
+				<td><b>Depreciation</b></td>
+					<td>&nbsp;</td>
+					<?php 
+					foreach($category_data as $cat) {
+						echo '<td>'.$cat['asset_category_depreciation_rate'].'%</td>';
+					}
+					?>
+					<td><b>4,324,345</b></td>
+				</tr>
+				<tr >
+					<td><b>As at start</b></td>
+					<td>&nbsp;</td>
+					<?php 
+					foreach($category_data as $cat) {
+						echo '<td><b>3,432,233</b></td>';
+					}
+					?>
+					<td><b>4,324,345</b></td>
+				</tr>
+				<tr >
+					<td>Charge of the year</td>
+					<td>&nbsp;</td>
+					<?php 
+					foreach($category_data as $cat) {
+						echo '<td>3,432,233</td>';
+					}
+					?>
+					<td><b>4,324,345</b></td>
+				</tr>
+				<tr >
+					<td>Disposals</td>
+					<td>&nbsp;</td>
+					<?php 
+					foreach($category_data as $cat) {
+						echo '<td>3,432,233</td>';
+					}
+					?>
+					<td><b>4,324,345</b></td>
+				</tr>
+				<tr >
+					<td><b>As at end</b></td>
+					<td>&nbsp;</td>
+					<?php 
+					foreach($category_data as $cat) {
+						echo '<td><b>3,432,233</b></td>';
+					}
+					?>
+					<td><b>4,324,345</b></td>
+				</tr>
+				<tr>
+					<td colspan="7">&nbsp;</td>
+				</tr>
+				<tr >
+					<td><b>Net Book Value</b></td>
+					<td>&nbsp;</td>
+					<?php 
+					foreach($category_data as $cat) {
+						echo '<td>3,432,233</td>';
+					}
+					?>
+					<td><b>4,324,345</b></td>
+				</tr>
+				<tr >
+					<td><b>As at end</b></td>
+					<td>&nbsp;</td>
+					<?php 
+					foreach($category_data as $cat) {
+						echo '<td>3,432,233</td>';
+					}
+					?>
+					<td><b>4,324,345</b></td>
+				</tr>
+				<tr >
+					<td><b>As at start</b></td>
+					<td>&nbsp;</td>
+					<?php 
+					foreach($category_data as $cat) {
+						echo '<td>3,432,233</td>';
+					}
+					?>
+					<td><b>4,324,345</b></td>
+				</tr>
+			</table>
+			</center>
+			<br class="clearAll">
+			<form action="<?php echo $baseUrl.'report/assets_schedule_pdf' ?>" method="post">
+				<input type="hidden" value="<?php echo $date_from ?>" name="from_date" />
+				<input type="hidden" value="<?php echo $date_to ?>" name="to_date" />
+				<button style="float:right" class="stdbtn"><img src="<?php echo $templatePathUrl.'images/pdf.jpg'?>" width="15px;"/>  Print to PDF</button><br/><br/>
+			</form>
+			<!--<button style="float:right" class="stdbtn" onclick="window.location(<?php echo $baseUrl.'reports'?>)"><img src="<?php echo $templatePathUrl.'images/excel.jpg'?>" width="15px;"/>  Export as a spreadsheet</button>-->
+			<a style="float:right" class="stdbtn" href="<?php echo $baseUrl.'report/assets_schedule_csv' ?>"><img src="<?php echo $templatePathUrl.'images/excel.jpg'?>" width="15px;"/>  Export as a spreadsheet</a>
+			
+		</div><!--contentwrapper-->
+	</div><!-- centercontent -->
+</div><!--bodywrapper-->
+<?php include('footer.html'); ?>
+</body>
+</html>

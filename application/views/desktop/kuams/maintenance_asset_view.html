@@ -1,0 +1,94 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+
+<?php include('common/header.php'); ?>
+
+<script type="text/javascript" src="<?php t('templatePathUrl') ?>js/custom/tables.js"></script>
+<script type="text/javascript" src="<?php t('templatePathUrl') ?>js/plugins/jquery.dataTables.min.js"></script>
+<link rel="stylesheet" href="<?php t('templatePathUrl') ?>css/prettyPhoto.css" type="text/css" media="screen" charset="utf-8" />
+	<script src="<?php t('templatePathUrl') ?>js/custom/jquery.prettyPhoto.js" type="text/javascript" charset="utf-8"></script>
+<script type="text/javascript" charset="utf-8">
+	jQuery(document).ready(function(){
+		jQuery("a[rel^='prettyPhoto']").prettyPhoto();
+	});
+</script>
+</head>
+
+<body class="withvernav">
+
+<div class="bodywrapper">
+
+	<?php include('common/top_header.php'); ?>
+	<?php include('common/menu_header.php'); ?>
+		
+	<div class="centercontent" style="padding-bottom:50px;">
+	
+		<div class="pageheader">
+			<h1 class="pagetitle">Assets scheduled for maintenance</h1>
+			<span class="pagedesc">Repair and update repair reports</span>
+			
+			<ul class="hornav">
+				<li><a href="<?php echo $baseUrl.'maintenance'?>">Scheduled Assets</a></li>
+				<li class="current"><a>Asset View</a></li>
+				<li><a href="<?php echo $baseUrl.'pastmaintenance'?>">Past Repairs</a></li>
+			</ul>
+		</div><!--pageheader-->
+		
+		
+		<div id="contentwrapper" class="contentwrapper">
+			<div>
+				<form action="<?php echo $baseUrl; ?>maintenance/view_asset" method="post">
+					<p>Enter the tag ID of the asset you want to view.</p>
+					<input type="text" required="true" name="tag" placeholder="e.g. KU/CIT/34/44/221" class="smallinput" value="<?php if (isset($tag)) echo $tag; ?>" />
+					<input type="submit" class="stdbtn" value="Search Asset">
+				</form>
+				<?php if ($flag == 0) {
+					
+				} else { ?>
+				
+				<br />
+					<div class="one_half">
+						<p>
+							<?php foreach ($media as $img) { ?>
+							<a href="<?php echo $baseUrl.$img['asset_media_url_path']?>" rel="prettyPhoto"><img class="img" src="<?php echo $baseUrl.$img['asset_media_url_path']?>" style="height:100px;border: 1px solid #eee;"/></a>
+							<?php } ?>
+						</p>
+						<p>
+							<label><b>Tag ID: </b></label><?php echo $data->asset_tag_id; ?><br/>
+							<label for="slug"><b>Category: </b></label><?php echo $category_name; ?><br/>
+							<label for="slug"><b>Model/Type: </b></label><?php echo $data->asset_model; ?><br/>
+							<label for="slug" title="The asset's initial cost"><b>Cost: </b></label><?php echo $data->asset_cost; ?><br/>
+							<label for="date"><b>Supply Date: </b></label><?php echo $data->asset_supply_date; ?>
+						</p>
+						<?php 
+						$attrib_data = json_decode($data->asset_meta_field_data, true);
+						include('ajax/blog/assetviewattributes.html');
+						?>
+						
+					</div><!-- one_half -->
+					
+					<div class="one_half last">
+						<h4>Asset History</h4>
+						<?php 
+						if (is_array($history) && count($history) != 0) {
+							foreach ($history as $h) {
+								echo '<p style="border-bottom:solid 1px #eaeaea;padding:5px;">'.$h['log_asset_description'];
+								echo '<br/><i>'.$h['log_date'].'</i></p>';
+							}
+						} else {
+							echo 'No asset history recorded';
+						}
+						?>
+					</div><!-- one_half last -->
+					<?php } ?>
+					<br clear="all" />
+				</div>
+			</div><!--contentwrapper-->
+		<br clear="all" />
+	</div><!-- centercontent -->
+</div><!--bodywrapper-->
+<?php include('footer.html'); ?>
+</body>
+</html>
+

@@ -1,0 +1,125 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+
+<?php include('common/header.php'); ?>
+
+<script type="text/javascript" src="<?php t('templatePathUrl') ?>js/custom/forms.js"></script>
+
+</head>
+
+<body class="withvernav">
+
+<div class="bodywrapper">
+	<?php include('common/top_header.php'); ?>
+	<?php include('common/menu_header.php'); ?>
+	
+	<div class="pageheader">
+		<h1 class="pagetitle">Reports</h1>
+		
+		<ul class="hornav">
+			<li class="current"><a> Generate Reports</a></li>
+			<li><a href="<?php echo $baseUrl.'report/charts'?>">Charts</a></li>
+		</ul>
+	</div><!--pageheader-->
+	
+	<div class="contentwrapper">
+		<div id="charts" class="subcontent">
+			<div class="contenttitle2">
+				<h3>Fixed Assets Schedule</h3>
+			</div><!--contenttitle-->
+			<br/><br/>
+			<form action="<?php echo $baseUrl;?>report/assets_schedule" method="post">
+				<span>
+					<b for="date">Date From:</b>
+					<input type="text" name="from_date" class="smallinput" id="date" style="width:50%"/>
+					&nbsp;&nbsp;
+					<b for="date">To</b>
+					<input type="text" name="to_date" class="smallinput" id="date1" style="width:50%"/>
+					&nbsp;&nbsp;
+					<input type="submit" class="stdbtn" value="Print Report">
+				</span>
+			</form>
+			<br/><br/>
+			<hr/>
+			
+			<div class="contenttitle2">
+				<h3>Fixed Assets Register</h3>
+			</div><!--contenttitle-->
+			<br/><br/>
+			<form action="<?php echo $baseUrl;?>report/asset_view_report" method="post">
+				<b>Enter Tag ID :</b>
+				<input type="text" placeHolder="e.g. KU/CIT/63/434/2" name="tag_id" class="smallinput"/>
+				&nbsp;&nbsp;
+				<input type="submit" class="stdbtn" value="Print Report">
+			</form>
+			<br/><br/>
+			<hr/>
+			
+			<div class="contenttitle2">
+				<h3>Disposed Assets Register</h3>
+			</div><!--contenttitle-->
+			<br/><br/>
+			<form action="<?php echo $baseUrl;?>report/disposed_assets" method="post">
+				<span>
+					<b for="date">Date From:</b>
+					<input type="text" name="from_date" class="smallinput" id="date2" style="width:50%"/>
+					&nbsp;&nbsp;
+					<b for="date">To</b>
+					<input type="text" name="to_date" class="smallinput" id="date3" style="width:50%"/>
+					&nbsp;&nbsp;
+					<input type="submit"  class="stdbtn" value="Print Report">
+				</span>
+			</form>
+			<br/><br/>
+			<hr/>
+			
+			<div class="contenttitle2">
+				<h3>Maintenance Schedule Register</h3>
+			</div><!--contenttitle-->
+			<br/><br/>
+			<form action="<?php echo $baseUrl;?>report/maintenance_schedule" method="post">
+				<span>
+					<b for="date">Date From:</b>
+					<input type="text" name="from_date" class="smallinput" id="date4" style="width:50%"/>
+					&nbsp;&nbsp;
+					<b for="date">To</b>
+					<input type="text" name="to_date" class="smallinput" id="date5" style="width:50%"/>
+					&nbsp;&nbsp;
+					<input type="submit" class="stdbtn" value="Print Report">
+				</span>
+			</form>
+			<br/><br/>
+			<hr/>
+			
+			<div class="contenttitle2">
+				<h3>Maintenance Repair Reports</h3>
+			</div><!--contenttitle-->
+			<br/><br/>
+			<form action="<?php echo $baseUrl;?>report/maintenance_repair" method="post">
+				<span>
+					<b for="date">Date From:</b>
+					<input type="text" name="from_date" class="smallinput" id="date6" style="width:50%"/>
+					&nbsp;&nbsp;
+					<b for="date">To</b>
+					<input type="text" name="to_date" class="smallinput" id="date7" style="width:50%"/>
+					&nbsp;&nbsp;
+					<input type="submit" class="stdbtn" value="Print Report">
+				</span>
+			</form>
+			<br/><br/>
+			<hr/>
+		
+		<br clear="all" />
+		</div><!--#charts-->
+		
+		<div id="statistics" class="subcontent">
+			&nbsp;
+		</div><!--#statistics-->
+		
+	</div><!--contentwrapper-->
+	
+</div><!--bodywrapper-->
+<?php include('footer.html'); ?>
+</body>
+</html>

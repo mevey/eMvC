@@ -1,0 +1,15 @@
+<br />
+	<div>
+		<p>From: <?php echo $user_data->user_othername.' '.$user_data->user_surname; ?></p>
+		<h5>Title: <?php echo $memo_data_content->memo_data_title; ?></h5>
+		<div style="border:solid 1px #eaeaea">
+		<?php echo stripslashes($memo_data_content->memo_data_body); ?>
+		</div
+		<p>Sent on <i><?php echo $memo_data_content->memo_data_date; ?></i></p>
+	</div>
+	<br clear="all" />
+	<form>
+	<div class="quickformbutton">
+		<button class="cancel">Close</button>
+	</div><!-- button -->
+	</form>

@@ -1,0 +1,67 @@
+<h4>Problem Statement</h4>
+<br />
+<div>
+	<div class="one_half">
+		<?php $maintenance = $maintenance_data[0]; ?>
+		<p>
+			<?php echo ''.$maintenance['asset_category_name'].''?><br/>
+			<?php echo ''.$maintenance['asset_model'].''?><br/>
+			<label for="title">Tag ID: </label><?php echo '<b>'.$maintenance['asset_tag_id'].'  </b>'?>
+		</p>
+		<p>
+			<label for="title">Current Owner </label><?php echo '<b>'.$maintenance['user_surname'].' '.$maintenance['user_othername'].'</b>'?><br/>
+			<label for="title">Office: </label><?php echo '<b>'.$maintenance['user_office'].'</b>';?><br/>
+			<label for="title">Department: </label><?php echo '<b>'.$maintenance['department_name'].'</b>'?><br/>
+		</p>
+		<?php if (isset($past_repairs)) { ?>
+		<p style="text-decoration:underline;">Past Repairs and Problems<p>
+		<table width="100%">
+			<tr style="border:1px solid #eaeaea;">
+				<th>Problem</th>
+				<th>Repair report</th>
+			</tr>
+			<?php 
+			foreach($past_repairs as $row){ 
+				echo '<tr style="border:1px solid #eaeaea;">';
+				echo '<td>'. $row['maintenance_problem'].'<br/><i>'.$row['maintenance_problem_date'].'</i></td>';
+				if ( $row['maintenance_done'] == 0){
+					echo '<td><b style="color:red"> No repair report made for this problem</b><br/>';
+					echo '</td>';
+				} else {
+					echo '<td>'. $row['maintenance_report'].'<br/><i>'.$row['maintenance_report_date'].'</i></td>';
+				}
+				echo '</tr>';
+			}
+			?>
+		</table>
+		<?php } ?>
+	</div>
+	<div class="one_half last" >
+		<table width="100%">
+			<tr>
+				<td style="border:1px solid #eaeaea">
+					<p>
+						<label for="title"><b>Problem Description </b></label><br/><?php echo $maintenance['maintenance_problem']; ?>
+					</p>
+					<p>
+						<label for="title">Date reported: </label><br/><?php echo '<i>'.$maintenance['maintenance_problem_date'].'</i>'?>
+					</p>
+				</td>
+			</tr>
+		</table>
+		<form method="post" action="<?php echo $baseUrl.'maintenance/send_report?id='.$maintenance['maintenance_id']?>" class="quickform">
+			<p>Fill in your findings during repair.</p>
+			<label>Repair report</label>
+			<textarea name="report"></textarea><br/>
+			<div class="quickformbutton">
+				<button type="submit" class="update">Send Report</button>
+			</div>
+		</form>
+	</div>
+</div>
+<form class="quickform">
+	<div class="quickformbutton">
+		<button class="cancel" style="float:right;">Close</button>
+	</div>
+</form>
+

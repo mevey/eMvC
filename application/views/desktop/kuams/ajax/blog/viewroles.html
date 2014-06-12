@@ -1,0 +1,56 @@
+<h4>View <?php echo $data->group_name; ?> Roles</h4>
+<br />
+	<div  class="one_half">
+		<?php
+			if (empty($role_data)) {
+				echo '<p style="color:red">No role data is currently defined for this group.</p>' ;
+			} else {
+			?>
+			 <div class="contenttitle2">
+				<h3>Roles</h3>
+			</div><!--contenttitle-->
+
+		<table cellpadding="5" cellspacing="0" border="0" class="stdtable">
+			<colgroup>
+				<col class="con0" />
+				<col class="con1" />
+				<col class="con0" />
+			</colgroup>
+			<thead>
+				<tr>
+					<th class="head0" ><a>Role Name</a></th>
+					<th class="head0" ><a>Role Description</a></th>
+					<th class="head0">&nbsp;</th>
+				</tr>
+			</thead>
+			<tbody>
+		<?php 
+		foreach ($role_data as $row){
+			echo '<tr>';
+			echo '<td class="center">'.$row['role_alias'].'</td>';
+			echo '<td class="center">'.$row['role_description'].'</td>';
+			echo '<td class="center"><a href="'.$baseUrl.'quick/delete_group_role?id='.$row['group_role_id'].'">Remove </a></td>';
+			echo '<tr>';
+		}
+		?>
+			</tbody>
+		</table>
+		
+	</div><!-- one_half last -->
+	
+	<br class='clearall'>
+	
+	<form action="" method="post" class="quickform">
+	<div class="quickformbutton">
+		<!--<button class="update">Update</button>-->
+		<button class="cancel" style="float:right;">Close</button>
+		<span class="loading"><img src="<?php t('templatePathUrl') ?>images/loaders/loader3.gif" alt="" />Updating changes...</span>
+	</div><!-- button -->
+	</form>
+	<?php } ?>
+	<br/><br/>
+	<form>
+		<input type="hidden" name="id" value='<?php echo $data->group_id; ?>'/>
+		<h4>Define a new role for this user group</h4>
+		
+	</form> 

@@ -1,0 +1,64 @@
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<?php include('common/header.php'); ?>
+</head>
+
+<body class="withvernav">
+
+<div class="bodywrapper">
+
+	<?php include('common/top_header.php'); ?>
+	<?php include('common/menu_header.php'); ?>
+	
+	<div id="contentwrapper" class="contentwrapper">
+		<div class="subcontent">
+			<div class="subcontent">
+				<div class="one_half">
+					<div class="contenttitle2">
+						<h3>Asset Report</h3>
+					</div><!--contenttitle-->
+					<p>
+						<?php foreach ($media as $img) { ?>
+						<a href="<?php echo $baseUrl.$img['asset_media_url_path']?>"><img class="img" src="<?php echo $baseUrl.$img['asset_media_url_path']?>" style="height:100px;border: 1px solid #eee;"/></a>
+						<?php } ?>
+					</p>
+					<p>
+						<label><b>Tag ID</b></label><br/><?php echo $data->asset_tag_id; ?>
+					</p>
+					<p><label for="slug"><b>Category</b></label><br/><?php echo $category_name; ?>
+					</p>
+					<p>
+						<label for="slug"><b>Model/Type</b></label><br/><?php echo $data->asset_model; ?>
+					</p>
+					
+					<p>
+						<label for="slug" title="The asset's initial cost"><b>Cost</b></label><br/><?php echo $data->asset_cost; ?>
+					</p>
+					
+					<p>
+						<label for="date"><b>Supply Date</b></label><br/><?php echo $data->asset_supply_date; ?>
+					</p>
+				</div><!-- one_half -->
+					
+				<div class="one_half last" style="margin-top:50px;">
+					<h4>Asset History</h4>
+					<?php 
+					if (is_array($history) && count($history) != 0) {
+						foreach ($history as $h) {
+							echo '<p style="border-bottom:solid 1px #eaeaea;padding:5px;">'.$h['log_asset_description'];
+							echo '<br/><i>'.$h['log_date'].'</i></p>';
+						}
+					} else {
+						echo 'No asset history recorded';
+					}
+					?>
+				</div>
+				<br clear="all" />
+			</div>
+		</div>
+	</div>
+</div><!--bodywrapper-->
+<?php include('footer.html'); ?>
+</body>
+</html>
+

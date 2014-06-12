@@ -1,0 +1,132 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+
+	<?php include('common/header.php'); ?>
+
+	<script type="text/javascript" src="<?php t('templatePathUrl') ?>js/custom/tables.js"></script>
+	<script type="text/javascript" src="<?php t('templatePathUrl') ?>js/plugins/jquery.dataTables.min.js"></script>
+	<link rel="stylesheet" href="<?php t('templatePathUrl') ?>css/prettyPhoto.css" type="text/css" media="screen" charset="utf-8" />
+	<script src="<?php t('templatePathUrl') ?>js/custom/jquery.prettyPhoto.js" type="text/javascript" charset="utf-8"></script>
+
+	<script type="text/javascript" charset="utf-8">
+		jQuery(document).ready(function(){
+			jQuery("a[rel^='prettyPhoto']").prettyPhoto();
+		});
+	</script>
+</head>
+
+<body class="withvernav">
+
+<div class="bodywrapper">
+
+	<?php include('common/top_header.php'); ?>
+	<?php include('common/menu_header.php'); ?>
+		
+	<div class="centercontent" style="padding-bottom:50px;">
+	
+		<div class="pageheader">
+			<h1 class="pagetitle">Kenyatta University Assets</h1>
+			<span class="pagedesc">Assign assets to a department</span>
+			
+			<ul class="hornav">
+				<li><a href="<?php t('baseUrl'); ?>asset">Asset List</a></li>
+				<?php if (Registry::checkRole(Roles::ADD_ASSET)){ ?>
+				<li><a href="<?php echo $baseUrl.'asset/add'?>">Add Asset</a></li>
+				<?php } ?>
+				<?php if (Registry::checkRole(Roles::ADD_ASSET)){ ?>
+				<li><a href="<?php t('baseUrl'); ?>asset/bulk">Bulk add assets</a></li>
+				<?php } ?>
+				<?php if (Registry::checkRole(Roles::ASSIGN_ASSET_TO_DEPARTMENT)){ ?>
+				<li class="current"><a>Assign Asset</a></li>
+				<?php } ?>
+				<?php if (Registry::checkRole(Roles::VIEW_ASSETS_SET_FOR_DISPOSAL)){ ?>
+				<li><a href="<?php t('baseUrl'); ?>disposeasset">Assets set for disposal</a></li>
+				<?php } ?>
+			</ul>
+		</div><!--pageheader-->
+		
+		
+		<div id="contentwrapper" class="contentwrapper">
+			<div id="addAsset" class="subcontent">
+				<p><button class="stdbtn" onclick="window.location='<?php t('baseUrl'); ?>asset'" style="float:left">&laquo; Back</button></p><br/><br/>
+				<div class="contenttitle2">
+					<h3>Assign This Asset</h3> 
+				</div><!--contenttitle-->
+				<br />
+				<div>
+					<div class="one_half">
+						
+						<?php
+						if (isset($allocation_err)) {
+							echo '<h4>Currently not allocated to any department.</h4>';
+						} else {
+						?>
+							<p>
+								<?php echo ' <h4>Currently allocated to:</h4>'.$allocated_dept.' Department';?>
+							</p>
+	
+						<?php } ?>
+						<?php foreach ($media as $img) { ?>
+						<a rel="prettyPhoto" href="<?php echo $baseUrl.$img['asset_media_url_path']?>"><img class="img" src="<?php echo $baseUrl.$img['asset_media_url_path']?>" style="height:100px;border: 1px solid #eee;"/></a>
+						<?php } ?>
+						</span>
+						<span><p>
+							<label for="title"><b>Asset tag id: </b></label><?php echo ' '.$asset_data['asset_tag_id'];?>
+						</p>
+						<p>
+							<label for="slug"><b>Model/Type: </b></label><?php echo ' '.$asset_data['asset_model'];?>
+						</p>
+						<p>
+							<label for="slug"><b>Category of the asset: </b></label><?php echo ' '.$category_data['asset_category_name'];?>
+						</p>
+						<?php 
+						$attrib_data = json_decode($asset_data['asset_meta_field_data'], true);
+						include('ajax/blog/assetviewattributes.html');
+						?>
+						<?php if(isset($allocation)) {?>
+						<p>
+							<label for="slug"><b> Remarks on assignment</label></b></label><?php echo $allocation->allocation_remarks == '0' ? ' No remarks. ':$allocation->allocation_remarks;?>
+						</p>
+						<?php } ?>
+						<br clear="all" />
+						<br clear="all" />
+						<br/>
+					</div><!-- one_half -->
+					
+					<div class="one_half last">
+						<form action="<?php echo $baseUrl.'asset/assign_asset'; ?>" method="post" >
+							<input type="hidden" name ="asset_id" value="<?php echo $asset_data['asset_id'] ;?>" />
+							<h4>Allocate to a Department:</h4>
+							<i>These are all the departments in the institution</i><br/>
+							<select name="dept_id">
+									<option value="0">Select a department</option>
+									<?php
+									foreach ($dept_data as $dept) {
+										if ($dept['department_id'] == 0) continue;
+										echo '<option value="'.$dept['department_id'].'">'.$dept['department_name'].'</option>'."\n";
+									}
+									?>
+								</select>
+								<br/>
+								Remarks:<br/>
+								<textarea name="remarks"></textarea>
+							<input type="submit" value="Assign to this Department" class="stdbtn" />
+							<br clear="all" />
+						</form>
+						
+					</div><!-- one_half last -->
+				</div>
+			</div><!-- #activities -->
+		
+		</div><!--contentwrapper-->
+		
+		<br clear="all" />
+		
+	</div><!-- centercontent -->
+	
+</div><!--bodywrapper-->
+<?php include('footer.html'); ?>
+</body>
+</html>
+

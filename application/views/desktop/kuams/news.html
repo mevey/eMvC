@@ -1,0 +1,85 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+
+<?php include('common/header.php'); ?>
+
+<script type="text/javascript" src="<?php t('templatePathUrl') ?>js/custom/tables.js"></script>
+<script type="text/javascript" src="<?php t('templatePathUrl') ?>js/custom/editor.js"></script>
+<script type="text/javascript" src="<?php t('templatePathUrl') ?>js/plugins/tinymce/jquery.tinymce.js"></script>
+
+</head>
+
+<body class="withvernav">
+
+<div class="bodywrapper">
+
+	<?php include('common/top_header.php'); ?>
+	<?php include('common/menu_header.php'); ?>
+	
+	<div class="centercontent">
+	
+		<div class="pageheader">
+			<h1 class="pagetitle">Memos</h1>
+			<span class="pagedesc">Send and recieve memos</span>
+			
+			<ul class="hornav">
+				<li><a href="<?php echo $baseUrl.'memo'; ?>">Incoming Memos</a></li>
+				<li><a href="<?php echo $baseUrl.'outgoingmemo';?>">Outgoing Memos</a></li>
+				<li><a href="<?php echo $baseUrl.'memo/compose' ?>">Send a memo</a></li>
+				<li class="current" ><a>News</a></li>
+			</ul>
+		</div><!--pageheader-->
+		
+		<div id="contentwrapper" class="contentwrapper">
+			 
+			 <div id="inbox" class="subcontent">
+			 	<div class="subcontent">
+					<div class="contenttitle2">
+						<h3>Compose a News Item</h3> 
+					</div><!--contenttitle-->
+					<form action="<?php t('baseUrl') ?>memo/news_add" method="post" class="quickform">
+						<label><b>Title:</b></label>
+						<input type="text" name="title" required="true" class="smallinput"><br/><br/><br/>
+						<label><b>Message:</b></label>
+						<div>
+							<textarea id="elm1" name="elm1" rows="15" cols="80" style="width: 80%" class="tinymce">
+								
+							</textarea>
+						</div>
+						<br/><br/>
+						<input type="submit" class="stdbtn" value="send"/>
+					</form>
+				</div>
+				<div class="contenttitle2">
+						<h3>Older News Items</h3> 
+					</div><!--contenttitle-->
+				<?php 
+				foreach($news_data as $news){
+					echo '<form action="'.$baseUrl.'memo/news_edit">';
+					echo '<h5>'.$news['news_title'].'</h5>';
+					echo '<p>'.stripslashes($news['news_body']).'</p>';
+					echo '<p><i>'.$news['news_date'].'</i></p>';
+					if ($news['news_publish'] == 0){
+						$t = 'Publish';
+					} else {
+						$t ='Unpublish';
+					}
+					echo '<p><a  class="stdbtn" href="'.$baseUrl.'memo/publish?id='.$news['news_id'].'">'.$t.'</a></p>';
+					echo '<input type="submit" class="stdbtn" value="Delete News Item" />';
+					echo '</form><hr/>';
+				}
+				?>
+				
+			 </div>
+		</div><!--contentwrapper-->
+	
+	</div><!--centercontent-->
+	<br class="clearAll"/>
+	<br class="clearAll"/>
+	
+</div><!--bodywrapper-->
+<?php include('footer.html'); ?>
+</body>
+</html>
+

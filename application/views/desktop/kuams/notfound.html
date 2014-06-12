@@ -1,0 +1,37 @@
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<?php include('common/header.php'); ?>
+</head>
+
+<body class="withvernav">
+
+<div class="bodywrapper">
+
+	<?php include('common/top_header.php'); ?>
+	<?php include('common/menu_header.php'); ?>
+	
+	<div class="contentwrapper padding10">
+		<div class="errorwrapper error404">
+			<div class="errorcontent">
+				<h1>Page Not Found</h1>
+				<h3>We couldn't find that page or resource.</h3>
+				
+				<p>The page or resource you are looking for was not found. This could be for several reasons</p>
+				<ul>
+					<li>You mis-typed the URL.</li>
+					<li>It never existed.</li>
+					<li>It got deleted for some reason.</li>
+					<li>You were looking for something that is not here.</li>
+				</ul>
+				<br />
+				<button class="stdbtn btn_black" onclick="history.back()">Go Back to Previous Page</button> &nbsp; 
+				<button onclick="location.href='dashboard'" class="stdbtn btn_orange">Go Back to Dashboard</button>
+			</div><!--errorcontent-->
+		</div><!--errorwrapper-->
+	</div>	
+	
+	
+</div><!--bodywrapper-->
+<?php include('footer.html'); ?>
+</body>
+</html>

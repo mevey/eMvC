@@ -1,0 +1,96 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+
+<?php include('common/header.php'); ?>
+
+<script type="text/javascript" src="<?php t('templatePathUrl') ?>js/plugins/jquery.validate.min.js"></script>
+<script type="text/javascript" src="<?php t('templatePathUrl') ?>js/custom/forms.js"></script>
+
+</head>
+
+<body class="withvernav">
+
+<div class="bodywrapper">
+
+	<?php include('common/top_header.php'); ?>
+	<?php include('common/menu_header.php'); ?>
+	
+	<div class="centercontent">
+	
+		<div class="pageheader">
+			<h1 class="pagetitle">Requests</h1>
+			<span class="pagedesc">Send and recieve requests</span>
+			
+			<ul class="hornav">
+				<?php 
+				if (Registry::checkRole(Roles::VIEW_INCOMING_REQUESTS)) {
+					if (Registry::checkRole(Roles::LIST_INHOUSE_REQUESTS)) { ?>
+						<li ><a href="<?php echo $baseUrl.'employeerequest'?>">Incoming requests</a></li>
+					<?php } else if(Registry::checkRole(Roles::LIST_DEPARTMENT_REQUESTS)) { ?>
+						<li ><a href="<?php echo $baseUrl.'departmentrequest'?>">Incoming requests</a></li>
+					<?php } 
+				}
+				?>
+				<li ><a href="<?php echo $baseUrl.'useroutgoingrequest'?>">Outgoing requests</a></li>
+				<li><a href="<?php echo $baseUrl.'employeerequest/compose'?>">Compose a request</a></li>
+				<li class="current"><a >Compose Department request</a></li>
+				<?php if (Registry::checkRole(Roles::LIST_INHOUSE_REQUESTS) || Registry::checkRole(Roles::LIST_DEPARTMENT_REQUESTS) ) { ?>
+					<li><a href="<?php echo $baseUrl.'requestassign/list' ?>">Approved requests not assigned (<?php echo $count;?>)</a></li>
+				<?php }?>
+				<?php //if (Registry::checkRole(Roles::VIEW_ORDERS) ) { ?>
+					<li><a href="<?php echo $baseUrl.'orders'?>">Orders Placed</a></li>
+				<?php //}?>
+				
+			</ul>
+		</div><!--pageheader-->
+		
+		<div id="contentwrapper" class="contentwrapper">
+			 <div id="compose" class="subcontent" >
+				<h4>Send a request</h4>
+				<p>Be as specific as you can to make sure you get the right asset.</p>
+				<form action="<?php echo $baseUrl.'employeerequest/send'?>" method="post"id="dept_req_add" class="quickform">
+				<input type="hidden" name="date" value="<?php echo Registry::getDate(); ?>"/>
+					<div>
+						<p>
+							<label for="slug"> Category of the asset</label><br/>
+							<select name="category">
+								<?php
+								foreach ($category_data as $cat) {
+									echo '<option ';
+									if (isset($cat_id) && $cat_id == $cat['asset_category_id'])	echo 'selected="selected"';
+									echo ' value="'.$cat['asset_category_id'].'">'.$cat['asset_category_name'].'</option>';
+								}
+								?>
+							</select>
+						</p>
+						<p>
+							<label for="slug">Model/ type: <i style="color:red">*</i></label><br/>
+							<span class="field"><input type="text" <?php if (isset($model)) echo 'value="'.$model.'"'?> name="model" id="model" class="smallinput" /></span>
+							</select>
+						</p>
+						<p>
+							<label>Title: <i style="color:red">*</i></label><br/>
+							<span class="field"><input type="text" name="title" id="title" class="smallinput" /></span>
+						</p>
+						<p>
+							<label>Request description: <i style="color:red">*</i></label><br/>
+							<span class="field"><textarea cols="80" rows="5" name="body" id="body" class="longinput" ></textarea></span> 
+						</p>
+						
+					</div>
+					<br clear="all" />
+					
+					<div class="quickformbutton">
+						<button class="update">Send</button>
+						<button class="cancel">Cancel</button>
+					</div><!-- button -->
+				</form>
+			 </div>
+		</div><!--contentwrapper-->
+	</div><!--centercontent-->
+</div><!--bodywrapper-->
+<?php include('footer.html'); ?>
+</body>
+</html>
+

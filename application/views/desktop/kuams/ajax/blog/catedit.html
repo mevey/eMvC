@@ -1,0 +1,192 @@
+<br />
+<form action="<?php echo $baseUrl.'quick/update_asset_category'?>" method="post" class="quickform">
+<input type="hidden" name="id" value='<?php echo $data->asset_category_id; ?>'/>
+
+	<div class="one_half">
+	<h4>Edit Category</h4>
+		<p>
+			<label for="title">Category name</label><br/>
+			<input type="text" name="name" class="smallinput" value='<?php echo $data->asset_category_name; ?>'/>
+		</p>
+		<p>
+			<label for="slug">Description</label><br/>
+			<span class="field"><textarea cols="80" rows="5" class="longinput" name='description'><?php echo $data->asset_category_description; ?></textarea></span> 
+		</p>
+		<p>
+			<label for="slug">Depreciation rate</label><br/>
+			<input type="text" name="dep_rate" class="smallinput" value='<?php echo $data->asset_category_depreciation_rate;?>'/> %p.a.
+		</p>
+		<p>
+			<label for="slug">Retire age</label><br/>
+			<input type="text" name="retire" class="smallinput" value='<?php echo $data->asset_category_retire_age;?>'/> years
+		</p>
+
+		<?php
+		$dt = json_decode($data->asset_category_meta_fields,true);
+		//foreach($dt as $att) {
+		while (false) {
+			echo '<p>';
+			echo '<label for="slug">'.$att['attrib_name'].'</label><br/>';
+			if ($att['attrib_type'] = 'yesno'){
+				echo 'Yes/No';
+			} else if ($att['attrib_type'] == 'text') {
+				echo 'Input :Text';
+			} else if ($att['attrib_type'] == 'number') {
+				echo 'Input :Number';
+			} else if ($att['attrib_type'] == 'options') {
+				echo 'Options :'.$arr['attrib_config'];
+			}
+			$r = $att['attrib_required'] == 1 ? 'Yes':'No';
+			echo 'Required: '.$r;
+			echo '</p>';
+		}
+		
+		?>
+		<br/><br/>
+	</div>
+	<div class="one_half last">
+		
+		<h4>Define custom attributes for this category</h4>
+		<p>Type in the attributes or characteristics of assets in this category you want to store.</p>
+		
+		<div id="attrib_list">
+			<!-- <div id="new_attrib_1">
+				<div id="attrib_1">
+				<div style="float:left;width:175px;font-weight:bold">Name</div>
+				<div style="float:left;width:190px;font-weight:bold">Type</div>
+				<div style="float:left;width:160px;font-weight:bold">Required</div><br/>
+				<input style="float:left;width:150px;margin-right:10px" type="text" id="attrib_name_1" name="attrib_name_1" type="text"> 
+				<select onChange="toggleOptionsDiv(1)" style="float:left;width:180px;min-width:150px;margin-right:10px" id="attrib_type_1" name="attrib_type_1" >
+					<option value="text">Text</option>
+					<option value="number">Number</option>
+					<option value="yesno">Yes/No</option>
+					<option value="options">Predefined Options-List</option>
+				</select>
+				<input style="float:left;width:140px" type="checkbox" id="attrib_required_1" name="attrib_required_1" />
+				<br clear="all" />
+				
+				<div id="attrib_configdiv_1" style="display:none" >
+					<strong>Please Define a Comma-Separated List of Options</strong><br/>
+					<input style="width:150px" type="text" id="attrib_config_1" name="attrib_config_1" type="text">
+				</div>
+				
+				<a onclick="removeAttrib(1)" >[ remove this attribute ]</a><br id="br_1" clear="all" />
+				<hr style="width:450px;float:left"/>
+				</div>
+			</div> -->
+			
+			<?php
+			$num = 0;
+			$dt = json_decode($data->asset_category_meta_fields,true);// print_r($dt);
+			if (!empty($dt) && is_array($dt)) {
+				foreach ($dt as $att) {
+					$attribName = ucwords(str_replace('_', ' ', $att['attrib_name']));
+					$attribConfig = '';
+					foreach ($att['attrib_config'] as $config) {
+						$attribConfig .= $config.',';
+					}
+					$attribType = $att['attrib_type'];
+					$num++;
+					echo '<br id="br_' . $num . '" clear="all" /><div id="attrib_' . $num . '"><div style="float:left;width:175px;font-weight:bold">Name</div>' .
+							'<div style="float:left;width:190px;font-weight:bold">Type</div>' .
+							'<div style="float:left;width:160px;font-weight:bold">Required</div><br/>' .
+							'<input style="float:left;width:150px;margin-right:10px" type="text" value="'.$attribName.'" id="attrib_name_' . $num . '" name="attrib_name_' . $num . '" type="text"> ' .
+							'<select onChange="toggleOptionsDiv(' . $num . ')" style="float:left;width:180px;min-width:150px;margin-right:10px" id="attrib_type_' . $num . '" name="attrib_type_' . $num . '" >';
+							echo '<option'; if($attribType == 'text') { echo ' selected="selected" '  ; } echo ' value="text">Text</option>';
+							echo '<option'; if($attribType == 'number') echo ' selected="selected" '; echo ' value="number">Number</option>';
+							echo '<option'; if($attribType == 'yesno') echo ' selected="selected" '; echo ' value="yesno">Yes/No</option>';
+							echo '<option'; if($attribType == 'options') echo ' selected="selected" '; echo ' value="options">Predefined Options-List</option>';
+							echo '</select>' .
+							'<input style="float:left;width:140px" type="checkbox" id="attrib_required_' . $num . '" name="attrib_required_' . $num . '" />' .
+							'<br clear="all" />' .
+							'<div ';
+							if ($attribType != 'options') echo ' style="display:none" ';
+							echo ' id="attrib_configdiv_' . $num . '" ><strong>Please Define a Comma-Separated List of Options</strong><br/>' .
+							'<input style="width:150px" type="text" id="attrib_config_' . $num . '" value="'.$attribConfig.'" name="attrib_config_' . $num . '" type="text">' .
+							'</div>' .
+							'<a onclick="removeAttrib(' . $num . ')" >[ remove this attribute ]</a><br clear="all" />' .
+							'<hr style="width:450px;float:left"/></div>' .
+							'<div id="new_attrib_' . ($num + 1) . '"></div>';
+				}
+			}
+			?>
+			<input name="attrib_count" id="attrib_count" type="hidden" value="<?php echo $num ?>" />
+			
+			<div id="new_attrib_2"></div>
+		</div>
+		
+		<br clear="all" />
+		<a class="stdbtn" onclick="addAttrib()" >Add one more attribute</a>
+		
+		<script type="text/javascript">
+			var attrib_num = <?php echo $num ?>;
+			var attrib_count = <?php echo $num ?>;
+			function addAttrib(){
+				attrib_count++;
+				document.getElementById('attrib_count').value = attrib_count;
+				
+				attrib_num++;
+				document.getElementById('new_attrib_' + attrib_num).innerHTML +=
+						getAttribHtml(attrib_num);
+				
+				return;
+			}
+			
+			function removeAttrib(num) {
+				document.getElementById('attrib_' + num).remove();
+				document.getElementById('br_' + num).remove();
+				
+				attrib_count--;
+				document.getElementById('attrib_count').value = attrib_count;
+			}
+			
+			function toggleOptionsDiv(num) {
+				value = document.getElementById('attrib_type_' + num).value;
+				if (value == "options") {
+					document.getElementById('attrib_configdiv_' + num).style.display = 'block';
+				} else {
+					document.getElementById('attrib_configdiv_' + num).style.display = 'none';
+				}
+			}
+			
+			function getAttribHtml(num) {
+				return '<br id="br_' + num + '" clear="all" /><div id="attrib_' + num + '"><div style="float:left;width:175px;font-weight:bold">Name</div>' +
+						'<div style="float:left;width:190px;font-weight:bold">Type</div>' +
+						'<div style="float:left;width:160px;font-weight:bold">Required</div><br/>' +
+						'<input style="float:left;width:150px;margin-right:10px" type="text" id="attrib_name_' + num + '" name="attrib_name_' + num + '" type="text"> ' +
+						'<select onChange="toggleOptionsDiv(' + num + ')" style="float:left;width:180px;min-width:150px;margin-right:10px" id="attrib_type_' + num + '" name="attrib_type_' + num + '" >' +
+						'<option value="text">Text</option>' +
+						'<option value="number">Number</option>' +
+						'<option value="yesno">Yes/No</option>' +
+						'<option value="options">Predefined Options-List</option>' +
+						'</select>' +
+						'<input style="float:left;width:140px" type="checkbox" id="attrib_required_' + num + '" name="attrib_required_' + num + '" />' +
+						'<br clear="all" />' +
+						'<div id="attrib_configdiv_' + num + '" style="display:none" >' +
+						'<strong>Please Define a Comma-Separated List of Options</strong><br/>' +
+						'<input style="width:150px" type="text" id="attrib_config_' + num + '" name="attrib_config_' + num + '" type="text">' +
+						'</div>' +
+						'<a onclick="removeAttrib(' + num + ')" >[ remove this attribute ]</a><br clear="all" />' +
+						'<hr style="width:450px;float:left"/></div>' +
+						'<div id="new_attrib_' + (num + 1) + '"></div>';
+			}
+		</script>
+		
+		<br clear="all" />
+		<br clear="all" />
+		<br clear="all" />
+		
+		
+	</div>
+		
+	<br clear="all" />
+	
+	<div class="quickformbutton">
+		<button class="update">Save</button>
+		<button class="cancel" style="float:right;">Close</button>
+		<?php if (Registry::checkRole(Roles::DELETE_ASSET_CATEGORY)) {?>
+			<a href="<?php echo $baseUrl.'category/delete?id='.$data->asset_category_id ?>"class="stdbtn" >Delete this Category</a>
+		<?php } ?>
+		
+	</div><!-- button -->
+</form>

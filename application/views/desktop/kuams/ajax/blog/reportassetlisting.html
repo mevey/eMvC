@@ -1,0 +1,63 @@
+<table cellpadding="5" cellspacing="0" border="0" class="stdtable stdtablequick" id="dyntable">
+	<colgroup>
+		<col class="con0" />
+		<col class="con1" />
+		<col class="con0" />
+		<col class="con1" />
+		<col class="con0" />
+		<?php if (Registry::checkRole(Roles::EDIT_ASSET)) { ?><col class="con1" /><?php }?>
+	</colgroup>
+	<thead>
+		<?php
+		$sort_class_text = $order_direction == 'ASC' ? 'sorting_asc': 'sorting_desc';
+		?>
+		<tr>
+			<th class="head0 <?php if ($order_by == 'asset_tag_id') echo $sort_class_text ?>" ><a>Asset tag id</a></th>
+			<th class="head1 <?php if ($order_by == 'asset_model') echo $sort_class_text ?>"><a <?php if ($order_by == 'asset_model') echo 'style="color:#0cf"'; ?> href="<?php echo $baseUrl.'asset?order_by=asset_model'; ?>">Asset Model/Type</a></th>
+			<th class="head0 <?php if ($order_by == 'asset_fk_cat_id') echo $sort_class_text ?>" ><a <?php if ($order_by == 'asset_fk_cat_id') echo 'style="color:#0cf"'; ?> href="<?php echo $baseUrl.'asset?order_by=asset_fk_cat_id'; ?>">Asset Category</a></th>
+			<th class="head1 <?php if ($order_by == 'asset_supply_date') echo $sort_class_text ?>" ><a <?php if ($order_by == 'asset_supply_date') echo 'style="color:#0cf"'; ?> href="<?php echo $baseUrl.'asset?order_by=asset_supply_date'; ?>">Asset Supply Date</a></th>
+			<th class="head0 <?php if ($order_by == 'asset_cost') echo $sort_class_text ?>" ><a <?php if ($order_by == 'asset_cost') echo 'style="color:#0cf"'; ?> href="<?php echo $baseUrl.'asset?order_by=asset_cost'; ?>">Asset Cost/value</a></th>
+			<?php if (Registry::checkRole(Roles::EDIT_ASSET)) { ?><th class="head1">&nbsp;</th><?php } ?>
+			<?php if (Registry::checkRole(Roles::ASSIGN_ASSET_TO_DEPARTMENT)) { ?><th class="head0 <?php if ($order_by == 'asset_state') echo $sort_class_text ?>"><a <?php if ($order_by == 'asset_state') echo 'style="color:#0cf"'; ?> href="<?php echo $baseUrl.'asset?order_by=asset_state'; ?>">Assign to a Department</a></th><?php } ?>
+		</tr>
+	</thead>
+	<tfoot>
+		<tr>
+			<th class="head0 <?php if ($order_by == 'asset_tag_id') echo $sort_class_text ?>" ><a>Asset tag id</a></th>
+			<th class="head1 <?php if ($order_by == 'asset_model') echo $sort_class_text ?>"><a <?php if ($order_by == 'asset_model') echo 'style="color:#0cf"'; ?> href="<?php echo $baseUrl.'asset?order_by=asset_model'; ?>">Asset Model/Type</a></th>
+			<th class="head0 <?php if ($order_by == 'asset_fk_cat_id') echo $sort_class_text ?>" ><a <?php if ($order_by == 'asset_fk_cat_id') echo 'style="color:#0cf"'; ?> href="<?php echo $baseUrl.'asset?order_by=asset_fk_cat_id'; ?>">Asset Category</a></th>
+			<th class="head1 <?php if ($order_by == 'asset_supply_date') echo $sort_class_text ?>" ><a <?php if ($order_by == 'asset_supply_date') echo 'style="color:#0cf"'; ?> href="<?php echo $baseUrl.'asset?order_by=asset_supply_date'; ?>">Asset Supply Date</a></th>
+			<th class="head0 <?php if ($order_by == 'asset_cost') echo $sort_class_text ?>" ><a <?php if ($order_by == 'asset_cost') echo 'style="color:#0cf"'; ?> href="<?php echo $baseUrl.'asset?order_by=asset_cost'; ?>">Asset Cost/Value</a></th>
+			<?php if (Registry::checkRole(Roles::EDIT_ASSET)) { ?><th class="head1">&nbsp;</th><?php } ?>
+			<?php if (Registry::checkRole(Roles::ASSIGN_ASSET_TO_DEPARTMENT)) { ?><th class="head0 <?php if ($order_by == 'asset_state') echo $sort_class_text ?>"><a <?php if ($order_by == 'asset_state') echo 'style="color:#0cf"'; ?> href="<?php echo $baseUrl.'asset?order_by=asset_state'; ?>">Assign to a Department</a></th><?php } ?> 
+		</tr>
+	</tfoot>
+	<tbody>
+		<?php 
+		foreach ($list_data['data'] as $row) {
+			echo '<tr>';
+			echo '<td class="con0">'.$row['asset_tag_id'].'</td>';
+			echo '<td class="con1">'.$row['asset_model'].'</td>';
+			echo '<td class="con0">'.$row['asset_category_name'].'</td>';
+			echo '<td class="center">'.$row['asset_supply_date'].'</td>';
+			echo '<td class="center">'.number_format($row['asset_cost']).'</td>';
+			if (Registry::checkRole(Roles::EDIT_ASSET)) { 
+				echo '<td class="center"><a href="'.$baseUrl.'quick/edit_asset?id='.$row['asset_id'].'" class="toggle">View/Edit</a></td>';
+			}
+			if (Registry::checkRole(Roles::ASSIGN_ASSET_TO_DEPARTMENT)) { 
+				echo '<td class="center"><a href="'.$baseUrl.'asset/assign_asset?id='.$row['asset_id'].'">';
+				if ($row['asset_state'] == 0) {
+					echo'<center><strong style="color:green">[ Assign ]</strong></center>';
+				} else if ($row['asset_state'] == 2) {
+					echo'<center><strong >Disposed</strong></center>';
+				} else {
+					echo'<center><strong style="color:blue">[ Revoke ]</strong></center>';
+				}
+				echo '</a></td>';
+		}
+		}
+		echo '</tr>';
+		
+		?>
+	</tbody>
+</table>

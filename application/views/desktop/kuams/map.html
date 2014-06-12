@@ -1,0 +1,41 @@
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<?php include('common/header.php'); ?>
+	<script src="http://maps.googleapis.com/maps/api/js?v=3&amp;sensor=false"></script>
+
+<script type="text/javascript">
+	function initialize() {
+		var center = new google.maps.LatLng(-1.183821,36.930714);
+
+		var mapOptions = {
+			zoom: 16,
+			center: center,
+			mapTypeId: google.maps.MapTypeId.ROADMAP
+		};
+		var googleMap = new google.maps.Map(document.getElementById('map'), mapOptions);
+	}
+	google.maps.event.addDomListener(window, 'load', initialize);
+</script>
+</head>
+
+<body class="withvernav">
+
+<div class="bodywrapper">
+
+	<?php include('common/top_header.php'); ?>
+	<?php include('common/menu_header.php'); ?>
+	
+	<div class="contentwrapper padding10">
+		<div class="errorwrapper error404">
+			<div class="errorcontent">
+				<div id="map" style="width:1200px;height:600px;"></div>
+			</div><!--errorcontent-->
+		</div><!--errorwrapper-->
+	</div>	
+	
+	
+</div><!--bodywrapper-->
+<?php include('footer.html'); ?>
+</body>
+</html>
+
