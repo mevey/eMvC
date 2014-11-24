@@ -1,4 +1,4 @@
-Following on experience I gained using development frameworks such as Codeigniter, Kohana and Yii, I have custom-built my very own Model-View-Controller framework. For each project I embark on, I can customize and tailor it to meet the specific needs and dynamics of the current project.
+eMVC
 
 It has numerous features missing in many other frameworks, such as the ability to act as a basic REST-API as-is (and with a little modification, can act as a fully fledged REST-API). Additionally, it has support for SSL (https), making it easy for developers to ensure parts of their applications are always accessed securely by simply setting a flag for specific "controllers" (the parts of MVC applications where core business logic is handled).
 
